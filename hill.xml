@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ContentApp">
+  <Id>682cfc4e-e380-4722-bc7c-88e8f0219671</Id>
+  <Version>1.0.0.0</Version>
+  <ProviderName>Mats van Helden</ProviderName>
+  <DefaultLocale>en-US</DefaultLocale>
+  <DisplayName DefaultValue="Micro sliders: Utility hill"/>
+  <Description DefaultValue="Interactive graph with sliders (Antonio &amp; Anita). Works in slide show."/>
+  <IconUrl DefaultValue="https://matsvanhelden-ops.github.io/micro-sliders/icon-32.png"/>
+  <HighResolutionIconUrl DefaultValue="https://matsvanhelden-ops.github.io/micro-sliders/icon-64.png"/>
+  <SupportUrl DefaultValue="https://matsvanhelden-ops.github.io/micro-sliders/"/>
+  <AppDomains><AppDomain>https://matsvanhelden-ops.github.io</AppDomain></AppDomains>
+  <Hosts><Host Name="Presentation"/></Hosts>
+  <DefaultSettings>
+    <SourceLocation DefaultValue="https://matsvanhelden-ops.github.io/micro-sliders/?g=hill"/>
+    <RequestedWidth>960</RequestedWidth>
+    <RequestedHeight>540</RequestedHeight>
+  </DefaultSettings>
+  <Permissions>Restricted</Permissions>
+</OfficeApp>
