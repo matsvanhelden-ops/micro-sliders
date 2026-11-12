@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Learning microeconomics by moving sliders</title>
+<style>
+:root{--bg:#F7F7F5;--card:#FFFFFF;--ink:#1F1E1C;--soft:#5F5E5A;--muted:#8A8983;--line:#E3E2DC;--tile:#F1F0EC;
+--blue:#378ADD;--red:#E24B4A;--purple:#7F77DD;--teal:#1D9E75;--coral:#D85A30;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1A1A19;--card:#232321;--ink:#EEEDE8;--soft:#C3C2B7;--muted:#8A8983;--line:#383835;--tile:#2C2C2A}}
+:root[data-theme="dark"]{--bg:#1A1A19;--card:#232321;--ink:#EEEDE8;--soft:#C3C2B7;--muted:#8A8983;--line:#383835;--tile:#2C2C2A}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:32px 18px 60px}
+h1{font-size:30px;line-height:1.15;margin:0 0 8px;font-weight:650}
+.lede{color:var(--soft);margin:0 0 28px;max-width:65ch}
+h2{font-size:20px;margin:0 0 4px;font-weight:600}
+.week{font-size:13px;color:var(--muted);margin:0 0 2px}
+.try{color:var(--soft);font-size:15px;margin:0 0 14px}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 20px 18px;margin:0 0 22px}
+.ctl{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0 0 10px}
+.ctl label{font-size:14px;color:var(--soft);min-width:170px}
+.ctl input{flex:1;min-width:150px;accent-color:var(--purple)}
+.ctl output{font-size:14px;font-weight:600;min-width:52px;font-variant-numeric:tabular-nums}
+button{font:inherit;font-size:14px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:6px 12px;cursor:pointer}
+button:hover{background:var(--tile)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.box{overflow-x:auto}
+svg{display:block;width:100%;height:auto;min-width:440px}
+svg text{font-family:inherit}
+.leg{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--soft);margin:4px 0 12px}
+.leg i{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-right:5px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.t{background:var(--tile);border-radius:8px;padding:12px 14px}
+.t .k{font-size:13px;color:var(--soft)}
+.t .v{font-size:18px;font-weight:600;font-variant-numeric:tabular-nums}
+.msg{background:var(--tile);border-radius:8px;padding:10px 14px;margin-top:10px;font-size:15px}
+.eq{font-variant-numeric:tabular-nums;font-size:15px;line-height:1.9;margin-top:10px}
+/* presentation mode: ?graph=name shows one graph filling a 16:9 slide */
+body.present{font-size:clamp(14px,1.45vw,24px);overflow:hidden}
+body.present .wrap{max-width:none;height:100vh;padding:72px 2.2vw 1.6vw}
+body.present .wrap>h1,body.present .lede,body.present section{display:none}
+body.present section.on{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:2vw;height:100%;margin:0;padding:1.4vw 1.8vw}
+body.present .left{display:flex;flex-direction:column;justify-content:center;min-height:0}
+body.present .left .box{overflow:hidden}
+body.present .left svg{width:100%;height:auto;max-height:calc(100vh - 170px);min-width:0}
+body.present .right{display:flex;flex-direction:column;gap:.6vw;min-height:0;overflow:auto}
+body.present .try{display:none}
+body.present h2{font-size:1.5em;line-height:1.2}
+body.present .week{font-size:.8em}
+body.present .ctl{margin:0;gap:.4vw}
+body.present .ctl label{min-width:100%;font-size:.85em}
+body.present .ctl output,body.present button{font-size:.9em}
+body.present .leg{font-size:.75em}
+body.present .tiles{grid-template-columns:1fr 1fr;gap:.6vw}
+body.present .t{padding:.6vw .8vw}
+body.present .t .k{font-size:.75em}
+body.present .t .v{font-size:1.1em}
+body.present .msg,body.present .eq{font-size:.9em;margin-top:0}
+body.present .bars{grid-template-columns:1fr!important}
+body.present .bars>div{font-size:.85em!important}
+
+/* deck */
+body.present .wrap{padding:2vw 2.5vw}
+body.present section.plain{display:none}
+body.present section.plain.on{display:flex;flex-direction:column;justify-content:center;padding:4vw 6vw;gap:1.6vw}
+.plain .big{font-size:3.4em;line-height:1.05;font-weight:700;margin:0;letter-spacing:-.01em}
+.plain .sub{font-size:1.25em;color:var(--soft);margin:0;max-width:40ch}
+.plain .who{font-size:.95em;color:var(--muted);margin-top:2vw}
+.plain .cast{display:flex;gap:1.5vw;margin-top:1vw}
+.plain .cast div{background:var(--tile);border-radius:12px;padding:1vw 1.4vw;font-size:.95em}
+.plain .cast b{display:block;font-size:1.2em}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5vw;margin-top:1vw}
+.steps div{background:var(--tile);border-radius:12px;padding:1.4vw}
+.steps b{display:block;font-size:2em;color:var(--purple);line-height:1}
+.steps p{margin:.6vw 0 0;font-size:1em}
+body.present .right .try{display:block;font-size:.75em;margin:0;line-height:1.45}
+body.present .right{gap:.5vw}
+body.present .msg{padding:.6vw .9vw;line-height:1.45}
+nav.deck{position:fixed;left:0;right:0;bottom:env(safe-area-inset-bottom,0px);height:56px;display:flex;align-items:center;justify-content:center;gap:12px;font-size:14px;color:var(--soft)}
+nav.deck button{font-size:14px;padding:6px 14px}
+nav.deck .n{min-width:64px;text-align:center;font-variant-numeric:tabular-nums}
+nav.deck .fs{position:absolute;right:18px}
+nav.deck .dots{display:flex;gap:6px;position:absolute;left:18px}
+nav.deck .dots i{width:8px;height:8px;border-radius:50%;background:var(--line);cursor:pointer}
+nav.deck .dots i.on{background:var(--purple)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Learning microeconomics by moving sliders</h1>
+<p class="lede">Each graph has one or two things I can change. I move a slider, watch what happens, and then explain it with two fixed characters: Antonio, who runs an ice cream shop, and Anita, a grumpy regular in the pub who spends her money on beer and bitterballen.</p>
+
+<section class="plain" id="s-cover">
+<p class="week">Microeconomics · Pindyck &amp; Rubinfeld</p>
+<p class="big">Learning microeconomics<br>by moving sliders</p>
+<p class="sub">How I use one ice cream shop and one grumpy pub regular to really understand the theory.</p>
+<div class="cast"><div><b>🍦 Antonio</b>runs an ice cream shop: production, costs, profit</div><div><b>🍺 Anita</b>spends her money on beer and bitterballen: consumer choice</div></div>
+<p class="who">[Your name] · [Date]</p>
+</section>
+<section class="plain" id="s-method">
+<p class="week">My method</p>
+<p class="big" style="font-size:2.4em">A static figure shows one moment.<br>A slider shows what <i>causes</i> what.</p>
+<div class="steps">
+<div><b>1</b><p>Take one theory from the book, in English.</p></div>
+<div><b>2</b><p>Build a graph where I can change one variable at a time.</p></div>
+<div><b>3</b><p>Move it, watch what happens, and explain it with Antonio or Anita.</p></div>
+</div>
+</section>
+<section id="s-ic">
+<p class="week">Week 2 · Consumer choice (ch. 3)</p>
+<h2>Anita's best basket: MRS = P<sub>x</sub> / P<sub>y</sub></h2>
+<p class="try">Anita can afford any point on the budget line. Slide along it. Where the indifference curve just touches the line, what she wants to trade (MRS) equals what she has to trade (the price ratio).</p>
+<div class="ctl"><label for="ax">Beers (X)</label><input type="range" id="ax" min="2" max="46" step="0.5" value="6"><output id="axo"></output></div>
+<div class="box"><svg id="g6" viewBox="0 0 660 340"></svg></div>
+<div class="leg"><span><i style="background:var(--blue)"></i>Budget line</span><span><i style="background:var(--purple)"></i>Indifference curve through her basket</span></div>
+<div class="tiles"><div class="t"><div class="k">Wants to trade (MRS)</div><div class="v" id="a1"></div></div><div class="t"><div class="k">Has to trade (Px / Py)</div><div class="v">2</div></div><div class="t"><div class="k">Utility</div><div class="v" id="a2"></div></div></div>
+<div class="msg" id="a3"></div>
+</section>
+<section id="s-hill">
+<p class="week">Week 2 · Consumer choice (ch. 3)</p>
+<h2>The same idea as a hill</h2>
+<p class="try">Walking along the budget line, Anita asks at every step: is one more beer worth more than the 2 bitterballen I give up for it? While the green bar is longer, she keeps walking uphill.</p>
+<div class="ctl"><label for="hx">Beers (X)</label><input type="range" id="hx" min="2" max="45" step="0.5" value="6"><output id="hxo"></output></div>
+<div class="box"><svg id="g7" viewBox="0 0 660 280"></svg></div>
+<div class="bars" style="display:grid;grid-template-columns:190px minmax(0,1fr);gap:8px 12px;align-items:center;margin-top:8px">
+<div style="font-size:14px">Gain: 1 more beer</div><div style="background:var(--tile);border-radius:4px;height:22px"><div id="h1" style="height:22px;border-radius:4px;background:var(--teal);width:0"></div></div>
+<div style="font-size:14px">Loss: 2 bitterballen</div><div style="background:var(--tile);border-radius:4px;height:22px"><div id="h2" style="height:22px;border-radius:4px;background:var(--coral);width:0"></div></div>
+</div>
+<div class="msg" id="h3"></div>
+</section>
+<section id="s-mp">
+<p class="week">Week 3 · Production (ch. 6)</p>
+<h2>Marginal product: big jumps vs. single steps</h2>
+<p class="try">Pick a starting number of workers and a step size. A big jump gives the average of all the small steps inside it, which hides what the last worker really adds.</p>
+<div class="ctl"><label for="ma">Start at L =</label><input type="range" id="ma" min="0" max="9" step="1" value="2"><output id="mao"></output></div>
+<div class="ctl"><label for="mb">Step size ΔL =</label><input type="range" id="mb" min="1" max="8" step="1" value="1"><output id="mbo"></output><button id="mplay">▶ Hire workers</button></div>
+<div class="box"><svg id="g2" viewBox="0 0 660 340"></svg></div>
+<div class="leg"><span><i style="background:var(--blue)"></i>Total scoops q(L)</span><span><i style="background:var(--coral)"></i>Big jump</span><span><i style="background:var(--teal)"></i>Single steps (MP)</span></div>
+<div class="tiles"><div class="t"><div class="k">Big jump Δq / ΔL</div><div class="v" id="m1" style="color:var(--coral)"></div></div><div class="t"><div class="k">Single steps, one worker each</div><div class="v" id="m2" style="color:var(--teal);font-size:15px"></div></div></div>
+<div class="msg" id="m3"></div>
+</section>
+<section id="s-iso">
+<p class="week">Week 3 · Production with two inputs (ch. 6)</p>
+<h2>Why the isoquant gets flatter</h2>
+<p class="try">Slide from few workers to many. Every point makes the same 100 scoops. Watch how many machines one extra worker can replace.</p>
+<div class="ctl"><label for="il">Workers (L)</label><input type="range" id="il" min="1.5" max="6" step="0.1" value="1.5"><output id="ilo"></output><button id="iplay">▶ Swap machines for people</button></div>
+<div class="box"><svg id="g3" viewBox="0 0 660 340"></svg></div>
+<div class="tiles"><div class="t"><div class="k">Antonio has</div><div class="v" id="i1"></div></div><div class="t"><div class="k">1 extra worker replaces</div><div class="v" id="i2" style="color:var(--coral)"></div></div><div class="t"><div class="k">Curve here</div><div class="v" id="i3" style="color:var(--purple)"></div></div></div>
+</section>
+<section id="s-bal">
+<p class="week">Week 3 · MRTS formula (ch. 6)</p>
+<h2>(MP<sub>L</sub>)(ΔL) + (MP<sub>K</sub>)(ΔK) = 0</h2>
+<p class="try">What Antonio gains from extra workers he must lose from fewer machines, because he stays on the same isoquant. Change the numbers and the balance always ends at zero.</p>
+<div class="ctl"><label for="ba">MP<sub>L</sub> (scoops per worker)</label><input type="range" id="ba" min="5" max="40" step="5" value="20"><output id="bao"></output></div>
+<div class="ctl"><label for="bb">MP<sub>K</sub> (scoops per machine)</label><input type="range" id="bb" min="5" max="20" step="5" value="5"><output id="bbo"></output></div>
+<div class="ctl"><label for="bc">ΔL (extra workers)</label><input type="range" id="bc" min="1" max="4" step="1" value="1"><output id="bco"></output></div>
+<div class="box"><svg id="g4" viewBox="0 0 660 260"></svg></div>
+<div class="eq" id="b1"></div>
+</section>
+<section id="s-cost">
+<p class="week">Week 3 · Cost minimization (ch. 7)</p>
+<h2>MRTS vs. w / r: the cheapest way to make 440 scoops</h2>
+<p class="try">Slide along the 440 isoquant and watch the cost. Then make workers more expensive: the cheapest point moves toward machines.</p>
+<div class="ctl"><label for="cl">Workers (L)</label><input type="range" id="cl" min="1.5" max="8" step="0.1" value="2"><output id="clo"></output></div>
+<div class="ctl"><label for="cw">Wage per worker (w)</label><input type="range" id="cw" min="25" max="100" step="5" value="50"><output id="cwo"></output></div>
+<div class="box"><svg id="g5" viewBox="0 0 660 340"></svg></div>
+<div class="leg"><span><i style="background:var(--purple)"></i>440 isoquant</span><span><i style="background:var(--coral)"></i>Isocost through Antonio's point</span><span><i style="background:var(--teal)"></i>Cheapest isocost</span></div>
+<div class="tiles"><div class="t"><div class="k">MRTS (technology)</div><div class="v" id="c1"></div></div><div class="t"><div class="k">w / r (market)</div><div class="v" id="c2"></div></div><div class="t"><div class="k">Total cost</div><div class="v" id="c3"></div></div></div>
+<div class="msg" id="c4"></div>
+</section>
+<section id="s-profit">
+<p class="week">Week 4 · Profit maximization (ch. 8)</p>
+<h2>Antonio's profit hill</h2>
+<p class="try">Press play and watch the gap between revenue and cost. Then change the price, and then the rent. Notice that the rent moves profit up or down but never moves q*.</p>
+<div class="ctl"><label for="pp">Price per scoop (P)</label><input type="range" id="pp" min="1" max="3" step="0.1" value="2"><output id="ppo"></output></div>
+<div class="ctl"><label for="pf">Rent per day (fixed cost)</label><input type="range" id="pf" min="0" max="150" step="10" value="50"><output id="pfo"></output></div>
+<div class="ctl"><label for="pq">Scoops sold (q)</label><input type="range" id="pq" min="0" max="300" step="1" value="60"><output id="pqo"></output><button id="pplay">▶ Sell more scoops</button></div>
+<div class="box"><svg id="g1" viewBox="0 0 660 340"></svg></div>
+<div class="leg"><span><i style="background:var(--blue)"></i>Revenue R = P × q</span><span><i style="background:var(--red)"></i>Cost C(q)</span><span><i style="background:var(--purple)"></i>Profit π = R − C</span></div>
+<div class="tiles"><div class="t"><div class="k">Revenue R</div><div class="v" id="p1" style="color:var(--blue)"></div></div><div class="t"><div class="k">Cost C</div><div class="v" id="p2" style="color:var(--red)"></div></div><div class="t"><div class="k">Profit π</div><div class="v" id="p3" style="color:var(--purple)"></div></div><div class="t"><div class="k">One more scoop</div><div class="v" id="p4" style="font-size:15px"></div></div></div>
+</section>
+<section class="plain" id="s-end">
+<p class="week">Wrap-up</p>
+<p class="big" style="font-size:2.6em">Every graph asks the same question:<br>what happens if I change one thing?</p>
+<p class="sub">Antonio stops where MR = MC. Anita stops where MRS = P<sub>x</sub>/P<sub>y</sub>. Antonio mixes workers and machines where MRTS = w/r. Same idea each time: keep going until the next step no longer pays off.</p>
+<p class="who">Thank you · questions?</p>
+</section>
+
+
+
+
+
+
+</div>
+<script>
+(function(){
+ const names={cover:'s-cover',method:'s-method',basket:'s-ic',hill:'s-hill',mp:'s-mp',isoquant:'s-iso',balance:'s-bal',cost:'s-cost',profit:'s-profit',end:'s-end'};
+ const q=new URLSearchParams(location.search).get('g')||location.hash.slice(1);
+ const id=names[q]||(q&&document.getElementById(q)?q:null);
+ const all=[...document.querySelectorAll('section')];
+ if(!id){ /* overzicht: alle grafieken onder elkaar, met links */
+  const h=document.querySelector('h1');const ul=document.createElement('p');ul.className='lede';
+  ul.innerHTML='Eén grafiek per slide: '+Object.keys(names).filter(k=>!['cover','method','end'].includes(k)).map(k=>`<a href="?g=${k}">${k}</a>`).join(' · ');
+  h.after(ul);return;}
+ document.body.classList.add('present');
+ all.forEach(sec=>{if(sec.classList.contains('plain'))return;
+  const L=document.createElement('div'),R=document.createElement('div');L.className='left';R.className='right';
+  [...sec.children].forEach(n=>(n.classList.contains('box')||n.classList.contains('leg')?L:R).appendChild(n));sec.append(L,R);});
+ all.forEach(s=>s.classList.toggle('on',s.id===id));
+ document.title=document.getElementById(id).querySelector('h2,.big')?.textContent||document.title;
+})();
+const $=id=>document.getElementById(id);
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+function mk(svg){svg.innerHTML='';return(t,a,txt)=>{const n=document.createElementNS('http://www.w3.org/2000/svg',t);for(const k in a)n.setAttribute(k,a[k]);if(txt!=null)n.textContent=txt;svg.appendChild(n);return n}}
+function axes(e,o){const L=o.L||60,R=o.R||630,T=o.T||20,B=o.B||290;
+ (o.yt||[]).forEach(v=>{e('line',{x1:L,x2:R,y1:o.Y(v),y2:o.Y(v),stroke:css('--line'),'stroke-width':v===0?1.5:1});e('text',{x:L-8,y:o.Y(v)+4,'text-anchor':'end','font-size':11,fill:css('--muted')},o.fy?o.fy(v):v)});
+ (o.xt||[]).forEach(v=>e('text',{x:o.X(v),y:B+18,'text-anchor':'middle','font-size':11,fill:css('--muted')},v));
+ e('line',{x1:L,x2:L,y1:T,y2:B,stroke:css('--muted')});e('line',{x1:L,x2:R,y1:B,y2:B,stroke:css('--muted')});
+ if(o.xl)e('text',{x:R,y:B+34,'text-anchor':'end','font-size':12,fill:css('--soft')},o.xl);
+ if(o.yl)e('text',{x:L+6,y:T+2,'font-size':12,fill:css('--soft')},o.yl);}
+const pathOf=(f,a,b,st,X,Y,lo=8,hi=330)=>{let d='';for(let v=a;v<=b+1e-9;v+=st){const y=Math.max(lo,Math.min(hi,Y(f(v))));d+=(d?'L':'M')+X(v).toFixed(1)+' '+y.toFixed(1)}return d};
+const eur=v=>(v<0?'-€':'€')+Math.abs(Math.round(v));
+function player(btn,input,step,max,min,fn){let t=null;btn.onclick=()=>{if(t){clearInterval(t);t=null;return}
+ if(+input.value>=max)input.value=min;t=setInterval(()=>{input.value=Math.min(max,+input.value+step);fn();if(+input.value>=max){clearInterval(t);t=null}},60)}}
+
+/* 1 profit */
+function d1(){const P=+$('pp').value,F=+$('pf').value,q=+$('pq').value;
+ $('ppo').textContent='€'+P.toFixed(2);$('pfo').textContent='€'+F;$('pqo').textContent=q;
+ const e=mk($('g1')),X=v=>60+v*1.9,Y=v=>250-v*0.28,C=v=>F+0.5*v+0.005*v*v;
+ axes(e,{X,Y,yt:[-200,0,200,400,600,800],xt:[0,50,100,150,200,250,300],fy:v=>(v<0?'-€':'€')+Math.abs(v),xl:'scoops (q)',B:306});
+ const qs=Math.round((P-0.5)/0.01),ps=P*qs-C(qs);
+ e('line',{x1:X(qs),x2:X(qs),y1:Y(P*qs),y2:Y(Math.min(0,ps)),stroke:css('--purple'),'stroke-dasharray':'3 4'});
+ e('text',{x:X(qs),y:Y(Math.min(0,ps))+16,'text-anchor':'middle','font-size':12,'font-weight':600,fill:css('--purple')},'q* = '+qs);
+ e('path',{d:pathOf(v=>P*v,0,300,3,X,Y,8,306),fill:'none',stroke:css('--blue'),'stroke-width':2.5});
+ e('path',{d:pathOf(C,0,300,3,X,Y,8,306),fill:'none',stroke:css('--red'),'stroke-width':2.5,'stroke-dasharray':'7 5'});
+ e('path',{d:pathOf(v=>P*v-C(v),0,300,3,X,Y,8,306),fill:'none',stroke:css('--purple'),'stroke-width':2.5});
+ const R=P*q,Cq=C(q),pi=R-Cq;
+ e('line',{x1:X(q),x2:X(q),y1:Y(R),y2:Y(Cq),stroke:pi>=0?css('--teal'):css('--red'),'stroke-width':5,opacity:.45});
+ [[R,'--blue'],[Cq,'--red'],[pi,'--purple']].forEach(([v,c])=>e('circle',{cx:X(q),cy:Y(v),r:5,fill:css(c),stroke:css('--card'),'stroke-width':2}));
+ $('p1').textContent=eur(R);$('p2').textContent=eur(Cq);$('p3').textContent=eur(pi);
+ const MC=0.5+0.01*q;$('p4').textContent=q<qs-1?'Brings €'+P.toFixed(2)+', costs €'+MC.toFixed(2)+'. Keep going':q>qs+1?'Brings €'+P.toFixed(2)+', costs €'+MC.toFixed(2)+'. Too far':'MR = MC. Top of the hill';}
+['pp','pf','pq'].forEach(i=>$(i).oninput=d1);player($('pplay'),$('pq'),2,300,0,d1);
+
+/* 2 marginal product */
+const TQ=[0,15,40,69,96,115,128,136,140,141,138];
+function d2(){let a=+$('ma').value,s=+$('mb').value;if(a+s>10){s=10-a;$('mb').value=s}const b=a+s;
+ $('mao').textContent=a;$('mbo').textContent=s;
+ const e=mk($('g2')),X=v=>60+v*56,Y=v=>290-v*1.75;
+ axes(e,{X,Y,yt:[0,40,80,120,160],xt:[0,1,2,3,4,5,6,7,8,9,10],xl:'workers (L)',yl:'scoops per hour'});
+ e('polyline',{points:TQ.map((v,i)=>X(i)+','+Y(v)).join(' '),fill:'none',stroke:css('--blue'),'stroke-width':2.5});
+ for(let i=a;i<b;i++){e('line',{x1:X(i),y1:Y(TQ[i]),x2:X(i+1),y2:Y(TQ[i]),stroke:css('--teal'),'stroke-width':1.5,'stroke-dasharray':'3 3'});
+  e('line',{x1:X(i+1),y1:Y(TQ[i]),x2:X(i+1),y2:Y(TQ[i+1]),stroke:css('--teal'),'stroke-width':3});
+  e('text',{x:X(i+1)+4,y:(Y(TQ[i])+Y(TQ[i+1]))/2+4,'font-size':11,fill:css('--teal')},(TQ[i+1]-TQ[i]>0?'+':'')+(TQ[i+1]-TQ[i]))}
+ e('line',{x1:X(a),y1:Y(TQ[a]),x2:X(b),y2:Y(TQ[b]),stroke:css('--coral'),'stroke-width':3});
+ TQ.forEach((v,i)=>e('circle',{cx:X(i),cy:Y(v),r:i===a||i===b?6:3.5,fill:i===a||i===b?css('--coral'):css('--blue'),stroke:css('--card'),'stroke-width':1.5}));
+ const steps=[];for(let i=a;i<b;i++)steps.push(TQ[i+1]-TQ[i]);
+ const big=(TQ[b]-TQ[a])/s;$('m1').textContent=big.toFixed(1)+' per worker';$('m2').textContent=steps.join(', ');
+ $('m3').textContent=s===1?'Step size 1: this is the marginal product of worker '+b+'. He adds '+steps[0]+' scoops.':'The big jump says '+big.toFixed(1)+' per worker, but the workers really added '+steps.join(', ')+'. The big jump is just their average, so it hides that the last one only added '+steps[steps.length-1]+'. Set ΔL to 1 to see the real marginal product.';}
+['ma','mb'].forEach(i=>$(i).oninput=d2);player($('mplay'),$('ma'),1,9,0,d2);
+
+/* 3 isoquant */
+const KQ=L=>36/L;
+function d3(){const L=+$('il').value,K=KQ(L);$('ilo').textContent=L.toFixed(1);
+ const e=mk($('g3')),X=v=>60+v*80,Y=v=>290-v*11;
+ axes(e,{X,Y,yt:[0,5,10,15,20,25],xt:[0,1,2,3,4,5,6,7],xl:'workers (L)',yl:'ice cream machines (K)'});
+ e('path',{d:pathOf(KQ,1.4,7,0.05,X,Y),fill:'none',stroke:css('--purple'),'stroke-width':2.5});
+ e('text',{x:X(6.4),y:Y(KQ(6.4))-10,'font-size':12,fill:css('--purple')},'100 scoops');
+ const K2=KQ(L+1);
+ e('line',{x1:X(L),y1:Y(K),x2:X(L),y2:Y(K2),stroke:css('--coral'),'stroke-width':3});
+ e('line',{x1:X(L),y1:Y(K2),x2:X(L+1),y2:Y(K2),stroke:css('--teal'),'stroke-width':3});
+ e('text',{x:X(L)-8,y:(Y(K)+Y(K2))/2+4,'text-anchor':'end','font-size':12,fill:css('--coral')},'−'+(K-K2).toFixed(1)+' machines');
+ e('text',{x:X(L+0.5),y:Y(K2)+18,'text-anchor':'middle','font-size':12,fill:css('--teal')},'+1 worker');
+ const m=K/L;e('line',{x1:X(L-1),y1:Y(K+m),x2:X(L+1.5),y2:Y(K-1.5*m),stroke:css('--muted'),'stroke-dasharray':'4 4'});
+ e('circle',{cx:X(L),cy:Y(K),r:6,fill:css('--ink'),stroke:css('--card'),'stroke-width':2});
+ $('i1').textContent=L.toFixed(1)+' workers, '+K.toFixed(1)+' machines';$('i2').textContent=(K-K2).toFixed(1)+' machines';
+ $('i3').textContent=m>3?'steep':m>1?'medium':'flat';}
+$('il').oninput=d3;player($('iplay'),$('il'),0.05,6,1.5,d3);
+
+/* 4 balance */
+function d4(){const a=+$('ba').value,b=+$('bb').value,dl=+$('bc').value,dk=a*dl/b;
+ $('bao').textContent=a;$('bbo').textContent=b;$('bco').textContent=dl;
+ const e=mk($('g4')),Z=130,s=0.7,gain=a*dl;
+ e('line',{x1:40,x2:620,y1:Z,y2:Z,stroke:css('--muted')});
+ e('rect',{x:110,y:Z-Math.min(115,gain*s),width:110,height:Math.min(115,gain*s),rx:4,fill:css('--teal')});
+ e('rect',{x:275,y:Z,width:110,height:Math.min(115,gain*s),rx:4,fill:css('--coral')});
+ e('text',{x:165,y:Z-Math.min(115,gain*s)-8,'text-anchor':'middle','font-size':13,'font-weight':600,fill:css('--teal')},'+'+gain+' scoops');
+ e('text',{x:330,y:Z+Math.min(115,gain*s)+18,'text-anchor':'middle','font-size':13,'font-weight':600,fill:css('--coral')},'−'+gain+' scoops');
+ e('text',{x:165,y:Z+18,'text-anchor':'middle','font-size':12,fill:css('--soft')},dl+' extra worker'+(dl>1?'s':''));
+ e('text',{x:330,y:Z-8,'text-anchor':'middle','font-size':12,fill:css('--soft')},(+dk.toFixed(2))+' fewer machines');
+ e('rect',{x:440,y:Z-2,width:110,height:4,rx:2,fill:css('--purple')});
+ e('text',{x:495,y:Z-12,'text-anchor':'middle','font-size':13,'font-weight':600,fill:css('--purple')},'total change = 0');
+ e('text',{x:495,y:Z+22,'text-anchor':'middle','font-size':12,fill:css('--soft')},'same isoquant');
+ const f=v=>+v.toFixed(2);
+ $('b1').innerHTML=`(MP<sub>L</sub>)(ΔL) + (MP<sub>K</sub>)(ΔK) = ${a} × ${dl} + ${b} × (−${f(dk)}) = ${gain} − ${gain} = 0<br>MRTS = −ΔK / ΔL = ${f(dk)} / ${dl} = <b>${f(dk/dl)}</b>, and MP<sub>L</sub> / MP<sub>K</sub> = ${a} / ${b} = <b>${f(a/b)}</b>. Always the same number.`;}
+['ba','bb','bc'].forEach(i=>$(i).oninput=d4);
+
+/* 5 cost minimisation */
+function d5(){const L=+$('cl').value,w=+$('cw').value,r=50,K=16/L,cost=w*L+r*K;$('clo').textContent=L.toFixed(1);$('cwo').textContent='€'+w;
+ const Ls=Math.sqrt(16*r/w),Ks=16/Ls,cmin=w*Ls+r*Ks;
+ const e=mk($('g5')),X=v=>60+v*62,Y=v=>290-v*22;
+ axes(e,{X,Y,yt:[0,2,4,6,8,10,12],xt:[0,1,2,3,4,5,6,7,8,9],xl:'workers (L)',yl:'machines (K), r = €50'});
+ const iso=(c)=>v=>c/r-(w/r)*v;
+ e('path',{d:pathOf(iso(cmin),0,9,0.1,X,Y,20,290),fill:'none',stroke:css('--teal'),'stroke-width':2,'stroke-dasharray':'6 5'});
+ e('path',{d:pathOf(iso(cost),0,9,0.1,X,Y,20,290),fill:'none',stroke:css('--coral'),'stroke-width':2});
+ e('path',{d:pathOf(v=>16/v,1.4,9,0.05,X,Y,20,290),fill:'none',stroke:css('--purple'),'stroke-width':2.5});
+ e('text',{x:X(8.3),y:Y(16/8.3)-10,'font-size':12,fill:css('--purple')},'440 scoops');
+ e('circle',{cx:X(Ls),cy:Y(Ks),r:6,fill:'none',stroke:css('--teal'),'stroke-width':2.5});
+ e('circle',{cx:X(L),cy:Y(K),r:6,fill:css('--ink'),stroke:css('--card'),'stroke-width':2});
+ const mrts=K/L,wr=w/r;$('c1').textContent=mrts.toFixed(2);$('c2').textContent=wr.toFixed(2);$('c3').textContent=eur(cost)+' · min '+eur(cmin);
+ $('c4').textContent=Math.abs(mrts-wr)<0.06?'MRTS = w / r. This is the cheapest way to make 440 scoops: the isocost line just touches the isoquant.':mrts>wr?'MRTS > w / r: one worker replaces '+mrts.toFixed(2)+' machines but only costs as much as '+wr.toFixed(2)+'. Hire more people, sell machines.':'MRTS < w / r: a worker costs more than the machines he replaces. Use fewer people and more machines.';}
+['cl','cw'].forEach(i=>$(i).oninput=d5);
+
+/* 6 Anita indifference curve */
+function d6(){const x=+$('ax').value,y=100-2*x,U=3*x*y*y,m=0.5*y/x;$('axo').textContent=x;
+ const e=mk($('g6')),X=v=>60+v*10.5,Y=v=>290-v*2.45;
+ axes(e,{X,Y,yt:[0,20,40,60,80,100],xt:[0,10,20,30,40,50],xl:'beers (X)',yl:'bitterballen (Y)'});
+ e('path',{d:pathOf(v=>100-2*v,0,50,0.5,X,Y,20,290),fill:'none',stroke:css('--blue'),'stroke-width':2.5});
+ let d='';for(let yy=4;yy<=112;yy+=0.5){const xx=U/(3*yy*yy);if(xx<=54)d+=(d?'L':'M')+X(xx).toFixed(1)+' '+Y(yy).toFixed(1)}
+ e('path',{d,fill:'none',stroke:css('--purple'),'stroke-width':2.5});
+ e('circle',{cx:X(16.67),cy:Y(66.67),r:6,fill:'none',stroke:css('--teal'),'stroke-width':2.5});
+ e('text',{x:X(16.67)+10,y:Y(66.67)-8,'font-size':12,fill:css('--teal')},'optimum');
+ e('circle',{cx:X(x),cy:Y(y),r:6,fill:css('--ink'),stroke:css('--card'),'stroke-width':2});
+ $('a1').textContent=m.toFixed(2);$('a2').textContent=Math.round(U).toLocaleString('en');
+ $('a3').textContent=Math.abs(m-2)<0.08?'MRS = Px / Py. The indifference curve just touches the budget line. Anita cannot get happier.':m>2?'For Anita one beer is worth '+m.toFixed(2)+' bitterballen, but it only costs 2. A bargain: she buys more beer.':'One beer is worth only '+m.toFixed(2)+' bitterballen to her, but it costs 2. She should buy less beer and more bitterballen.';}
+$('ax').oninput=d6;
+
+/* 7 utility hill */
+function d7(){const x=+$('hx').value,y=100-2*x,Uf=v=>3*v*Math.pow(100-2*v,2);$('hxo').textContent=x;
+ const e=mk($('g7')),X=v=>60+v*11.4,Y=v=>240-v/240000*220;
+ axes(e,{X,Y,B:240,yt:[0,60000,120000,180000,240000],fy:v=>v/1000+'k',xt:[0,10,20,30,40,50],xl:'beers (X), walking along the budget line',yl:'utility'});
+ e('path',{d:pathOf(Uf,0,50,0.5,X,Y,20,240),fill:'none',stroke:css('--purple'),'stroke-width':2.5});
+ e('line',{x1:X(16.67),x2:X(16.67),y1:Y(Uf(16.67)),y2:240,stroke:css('--teal'),'stroke-dasharray':'3 4'});
+ e('circle',{cx:X(x),cy:Y(Uf(x)),r:6,fill:css('--ink'),stroke:css('--card'),'stroke-width':2});
+ const gain=3*y*y,loss=12*x*y,mx=Math.max(gain,loss);
+ $('h1').style.width=(gain/mx*100)+'%';$('h2').style.width=(loss/mx*100)+'%';
+ $('h3').textContent=Math.abs(gain-loss)/mx<0.04?'Top of the hill: the gain equals the loss. This is MRS = Px / Py.':gain>loss?'The extra beer is worth more than the 2 bitterballen. Step right, uphill.':'The extra beer is worth less than the 2 bitterballen she gives up. She went too far: step back left.';}
+$('hx').oninput=d7;
+
+function all(){d1();d2();d3();d4();d5();d6();d7()}
+all();matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',all);
+</script>
+</body>
+</html>
