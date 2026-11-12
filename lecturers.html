@@ -33,7 +33,7 @@ code{background:var(--tile);padding:1px 6px;border-radius:5px;font-size:14px}
 <body>
 <div class="wrap">
 <h1>Learning microeconomics by moving sliders</h1>
-<p class="lede">Seven interactive graphs for a principles course (Pindyck &amp; Rubinfeld, chapters 3, 6, 7, 8). Two recurring characters: Antonio, who runs a pizzeria, and Anita, who spends her money on beer and pizza. Each slider has the same colour as the line it moves. Nothing is stored, no accounts, no cookies.</p>
+<p class="lede">Twelve interactive graphs for a principles course (Pindyck &amp; Rubinfeld, chapters 3, 6, 7, 8, 12, 18). Two recurring characters: Antonio, who runs a pizzeria, and Anita, who spends her money on beer and pizza. Each slider has the same colour as the line it moves. Nothing is stored, no accounts, no cookies.</p>
 
 <div class="card">
   <h2 style="margin-top:0">1 · Present right now (nothing to install)</h2>
@@ -64,7 +64,7 @@ code{background:var(--tile);padding:1px 6px;border-radius:5px;font-size:14px}
     <li>Start the slide show. Drag the sliders; click next to the graph (or use the bottom bar) to go to the next slide.</li>
   </ol>
   <p><strong>PowerPoint on Windows or Mac (desktop):</strong> the same add-in works, but the “upload” button does not exist there. Either present from PowerPoint for the web, or ask me: I will set it up on your laptop in ten minutes.</p>
-  <div class="note"><strong>Clicker:</strong> after you touch a slider, click once beside the graph so PowerPoint listens to the clicker again. The graphs also forward Page Down / Page Up themselves, so usually you will not notice.</div>
+  <div class="note"><strong>Clicker:</strong> after you touch a slider, the graph has the keyboard focus. Click once beside the graph (on the slide margin) and the clicker and arrow keys work again. Tested in PowerPoint for the web.</div>
 </div>
 
 <div class="card">
@@ -84,6 +84,11 @@ const graphs=[
  ['cost',"Cost minimisation","MRTS = w / r (ch. 7)"],
  ['basket',"Anita's best basket","Consumer choice (ch. 3): MRS = Px / Py"],
  ['hill',"The utility hill","Consumer choice (ch. 3), same idea as a hill"],
+ ['cournot',"Cournot: Antonio and Bruno","Oligopoly (ch. 12): reaction curves, collusion, Stackelberg, with the lecture's P = 30 − Q"],
+ ['extern',"Smoke from the pizza oven","Externalities (ch. 18): too much or too little production, deadweight loss"],
+ ['emission',"Efficient level of emissions","Remedies (ch. 18): MCA = MEC and the Pigouvian fee"],
+ ['feestd',"Fee versus standard","Remedies (ch. 18): two ovens, same total smoke, which is cheaper"],
+ ['public',"Lamps on the square","Public goods (ch. 18): vertical summation and free riding"],
 ];
 const base=location.href.replace(/[^/]*$/,'');
 const tb=document.getElementById('rows');

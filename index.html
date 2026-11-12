@@ -196,6 +196,58 @@ body.uu .plain .big{color:#1f2a7c}
 <div class="leg"><span><i style="background:var(--blue)"></i>Revenue R = P × q</span><span><i style="background:var(--red)"></i>Cost C(q)</span><span><i style="background:var(--purple)"></i>Profit π = R − C</span></div>
 <div class="tiles"><div class="t"><div class="k">Revenue R</div><div class="v" id="p1" style="color:var(--blue)"></div></div><div class="t"><div class="k">Cost C</div><div class="v" id="p2" style="color:var(--red)"></div></div><div class="t"><div class="k">Profit π</div><div class="v" id="p3" style="color:var(--purple)"></div></div><div class="t"><div class="k">One more slice</div><div class="v" id="p4" style="font-size:15px"></div></div></div>
 </section>
+<section id="s-cournot">
+<p class="week">Week 7 · Oligopoly (ch. 12)</p>
+<h2>Cournot: Antonio and Bruno choose how many pizzas</h2>
+<p class="try">Two pizzerias on the same square sell the same pizza. Demand is P = 30 − Q, with Q = q₁ + q₂ and MC = 0 (exactly as in the lecture). Move one pizzeria and watch the other's best reply. Press play to let them react to each other.</p>
+<div class="ctl"><label for="c1q" style="color:var(--blue);font-weight:600">Antonio's pizzas per hour (q₁)</label><input type="range" id="c1q" min="0" max="30" step="0.5" value="4" style="accent-color:var(--blue)"><output id="c1qo" style="color:var(--blue)"></output></div>
+<div class="ctl"><label for="c2q" style="color:var(--coral);font-weight:600">Bruno's pizzas per hour (q₂)</label><input type="range" id="c2q" min="0" max="30" step="0.5" value="20" style="accent-color:var(--coral)"><output id="c2qo" style="color:var(--coral)"></output><button id="cplay">▶ Let them react</button></div>
+<div class="ctl"><button id="cset1">Cournot (10, 10)</button><button id="cset2">Collusion (7.5, 7.5)</button><button id="cset3">Stackelberg (15, 7.5)</button><button id="cset4">Competition (15, 15)</button></div>
+<div class="box"><svg id="g8" viewBox="0 0 660 340"></svg></div>
+<div class="leg"><span><i style="background:var(--blue)"></i>Antonio's reaction curve q₁ = 15 − ½q₂</span><span><i style="background:var(--coral)"></i>Bruno's reaction curve q₂ = 15 − ½q₁</span><span><i style="background:var(--purple)"></i>Collusion curve q₁ + q₂ = 15</span></div>
+<div class="tiles"><div class="t"><div class="k">Price P = 30 − Q</div><div class="v" id="cp"></div></div><div class="t"><div class="k">Antonio's profit</div><div class="v" id="cpi1" style="color:var(--blue)"></div></div><div class="t"><div class="k">Bruno's profit</div><div class="v" id="cpi2" style="color:var(--coral)"></div></div><div class="t"><div class="k">Antonio's best reply to Bruno</div><div class="v" id="cbr" style="font-size:15px"></div></div></div>
+<div class="msg" id="cmsg"></div>
+</section>
+<section id="s-extern">
+<p class="week">Week 8 · Externalities (ch. 18)</p>
+<h2>Smoke from the pizza oven: too much or too little?</h2>
+<p class="try">The market only sees Antonio's private cost. Slide the external effect per pizza to the right: the wood oven's smoke makes the social cost higher than the private cost (too much production). Slide it to the left: the smell on the square is a benefit to passers-by (too little production).</p>
+<div class="ctl"><label for="ex" style="color:var(--purple);font-weight:600">External effect per pizza (− = benefit, + = cost)</label><input type="range" id="ex" min="-6" max="6" step="0.5" value="4" style="accent-color:var(--purple)"><output id="exo" style="color:var(--purple)"></output></div>
+<div class="box"><svg id="g9" viewBox="0 0 660 340"></svg></div>
+<div class="leg"><span><i style="background:var(--blue)"></i>Demand (private benefit)</span><span><i style="background:var(--red)"></i>Private marginal cost</span><span><i style="background:var(--purple)"></i>Social marginal cost or benefit</span></div>
+<div class="tiles"><div class="t"><div class="k">Market output Q<sub>m</sub></div><div class="v" id="exq"></div></div><div class="t"><div class="k">Efficient output Q*</div><div class="v" id="exe" style="color:var(--purple)"></div></div><div class="t"><div class="k">Deadweight loss</div><div class="v" id="exd" style="color:var(--coral)"></div></div></div>
+<div class="msg" id="exm"></div>
+</section>
+<section id="s-emission">
+<p class="week">Week 8 · Remedies: the efficient level of emissions (ch. 18)</p>
+<h2>How much smoke is efficient? MCA = MEC</h2>
+<p class="try">Cleaning the oven costs money (marginal cost of abatement, falling in emissions); smoke hurts the neighbours (marginal external cost, rising). Set the emission fee. Antonio reduces smoke as long as cleaning is cheaper than the fee. At a fee of 8 the two curves cross: that is the Pigouvian fee from the lecture.</p>
+<div class="ctl"><label for="ef" style="color:var(--coral);font-weight:600">Emission fee per unit of smoke (€)</label><input type="range" id="ef" min="0" max="24" step="1" value="2" style="accent-color:var(--coral)"><output id="efo" style="color:var(--coral)"></output><button id="eplay">▶ Raise the fee</button></div>
+<div class="box"><svg id="g10" viewBox="0 0 660 340"></svg></div>
+<div class="leg"><span><i style="background:var(--blue)"></i>MCA = 24 − 2E (Antonio's cost of cleaning)</span><span><i style="background:var(--red)"></i>MEC = E (cost to the neighbours)</span><span><i style="background:var(--coral)"></i>Fee</span></div>
+<div class="tiles"><div class="t"><div class="k">Smoke Antonio chooses</div><div class="v" id="ee" style="color:var(--coral)"></div></div><div class="t"><div class="k">Cleaning cost</div><div class="v" id="ea" style="color:var(--blue)"></div></div><div class="t"><div class="k">Cost to neighbours</div><div class="v" id="ec" style="color:var(--red)"></div></div><div class="t"><div class="k">Total social cost</div><div class="v" id="et"></div></div></div>
+<div class="msg" id="em"></div>
+</section>
+<section id="s-feestd">
+<p class="week">Week 8 · Fee or standard? (ch. 18)</p>
+<h2>Same total smoke, two ways: fee versus standard</h2>
+<p class="try">Antonio's old oven is expensive to clean (MCA = 24 − 2E); Bruno's new oven is cheap to clean (MCA = 24 − 4E). Pick the total smoke the city wants. A standard gives both the same cap. A fee lets each pizzeria clean until MCA equals the fee, so the cheap cleaner does more of the work.</p>
+<div class="ctl"><label for="ft" style="color:var(--purple);font-weight:600">Total smoke the city allows (units)</label><input type="range" id="ft" min="0" max="12" step="0.5" value="8" style="accent-color:var(--purple)"><output id="fto" style="color:var(--purple)"></output></div>
+<div class="box"><svg id="g11" viewBox="0 0 660 340"></svg></div>
+<div class="leg"><span><i style="background:var(--blue)"></i>Antonio, MCA = 24 − 2E</span><span><i style="background:var(--teal)"></i>Bruno, MCA = 24 − 4E</span><span><i style="background:var(--coral)"></i>Fee</span><span><i style="background:var(--purple)"></i>Standard (cap)</span></div>
+<div class="tiles"><div class="t"><div class="k">Fee that delivers this total</div><div class="v" id="ff" style="color:var(--coral)"></div></div><div class="t"><div class="k">Cleaning cost with the fee</div><div class="v" id="fc1" style="color:var(--coral)"></div></div><div class="t"><div class="k">Cleaning cost with the standard</div><div class="v" id="fc2" style="color:var(--purple)"></div></div><div class="t"><div class="k">The fee saves</div><div class="v" id="fs" style="color:var(--teal)"></div></div></div>
+<div class="msg" id="fm"></div>
+</section>
+<section id="s-public">
+<p class="week">Week 8 · Public goods (ch. 18)</p>
+<h2>Lamps on the square: add up what everyone is willing to pay</h2>
+<p class="try">Street lamps are non-rival and non-excludable. Anita, Antonio and the neighbours each have their own willingness to pay per lamp. For a public good you add the curves vertically: everyone enjoys the same lamp. Add neighbours and watch the efficient number of lamps rise, while nobody buys one alone.</p>
+<div class="ctl"><label for="pn" style="color:var(--purple);font-weight:600">Neighbours on the square (besides Anita and Antonio)</label><input type="range" id="pn" min="0" max="20" step="1" value="3" style="accent-color:var(--purple)"><output id="pno" style="color:var(--purple)"></output><button id="pplay2">▶ More neighbours move in</button></div>
+<div class="box"><svg id="g12" viewBox="0 0 660 340"></svg></div>
+<div class="leg"><span><i style="background:var(--blue)"></i>Anita's MB</span><span><i style="background:var(--teal)"></i>Antonio's MB</span><span><i style="background:var(--muted)"></i>One neighbour's MB</span><span><i style="background:var(--purple)"></i>Total MB (vertical sum)</span><span><i style="background:var(--red)"></i>Cost per lamp €12</span></div>
+<div class="tiles"><div class="t"><div class="k">Efficient number of lamps</div><div class="v" id="pq" style="color:var(--purple)"></div></div><div class="t"><div class="k">Lamps anyone buys alone</div><div class="v" id="pa"></div></div><div class="t"><div class="k">Total MB of the first lamp</div><div class="v" id="pt"></div></div></div>
+<div class="msg" id="pm"></div>
+</section>
 <section class="plain" id="s-end">
 <p class="week">Wrap-up</p>
 <p class="big" style="font-size:2.6em">Every graph asks the same question:<br>what happens if I change one thing?</p>
@@ -211,7 +263,7 @@ body.uu .plain .big{color:#1f2a7c}
 </div>
 <script>
 (function(){
- const names={cover:'s-cover',method:'s-method',basket:'s-ic',hill:'s-hill',mp:'s-mp',isoquant:'s-iso',balance:'s-bal',cost:'s-cost',profit:'s-profit',end:'s-end'};
+ const names={cover:'s-cover',method:'s-method',basket:'s-ic',hill:'s-hill',mp:'s-mp',isoquant:'s-iso',balance:'s-bal',cost:'s-cost',profit:'s-profit',cournot:'s-cournot',extern:'s-extern',emission:'s-emission',feestd:'s-feestd',public:'s-public',end:'s-end'};
  const sp=new URLSearchParams(location.search); if(sp.get('t')==='uu')document.body.classList.add('uu');
  const q=sp.get('g')||location.hash.slice(1);
  const id=names[q]||(q&&document.getElementById(q)?q:null);
@@ -380,7 +432,134 @@ function d7(){const x=+$('hx').value,y=100-2*x,Uf=v=>3*v*Math.pow(100-2*v,2);$('
  $('h3').textContent=Math.abs(gain-loss)/mx<0.04?'Top of the hill: the gain equals the loss. This is MRS = Px / Py.':gain>loss?'The extra beer is worth more than the 2 slices. Step right, uphill.':'The extra beer is worth less than the 2 slices she gives up. She went too far: step back left.';}
 $('hx').oninput=d7;
 
-function all(){d1();d2();d3();d4();d5();d6();d7()}
+/* 8 Cournot (lecture week 7: P = 30 − Q, MC = 0) */
+function d8(){const q1=+$('c1q').value,q2=+$('c2q').value;$('c1qo').textContent=q1;$('c2qo').textContent=q2;
+ const e=mk($('g8')),X=v=>60+v*19,Y=v=>290-v*9;
+ axes(e,{X,Y,yt:[0,5,10,15,20,25,30],xt:[0,5,10,15,20,25,30],xl:"Antonio's pizzas (q₁)",yl:"Bruno's pizzas (q₂)"});
+ e('line',{x1:X(15),y1:Y(0),x2:X(0),y2:Y(30),stroke:css('--blue'),'stroke-width':2.5});
+ e('text',{x:X(2),y:Y(27)-6,'font-size':11,fill:css('--blue')},"Antonio's reaction curve");
+ e('line',{x1:X(0),y1:Y(15),x2:X(30),y2:Y(0),stroke:css('--coral'),'stroke-width':2.5});
+ e('text',{x:X(22),y:Y(4)-6,'font-size':11,fill:css('--coral')},"Bruno's reaction curve");
+ e('line',{x1:X(0),y1:Y(15),x2:X(15),y2:Y(0),stroke:css('--purple'),'stroke-width':2,'stroke-dasharray':'6 5'});
+ e('text',{x:X(1),y:Y(13)-6,'font-size':11,fill:css('--purple')},'Collusion curve');
+ [[10,10,'Cournot','--teal'],[7.5,7.5,'Collusion','--purple'],[15,15,'Competition','--muted'],[15,7.5,'Stackelberg','--soft']].forEach(([a,b,l,c])=>{e('circle',{cx:X(a),cy:Y(b),r:5,fill:'none',stroke:css(c),'stroke-width':2});e('text',{x:X(a)+8,y:Y(b)+4,'font-size':11,fill:css(c)},l)});
+ const br1=Math.max(0,15-q2/2),br2=Math.max(0,15-q1/2);
+ e('line',{x1:X(q1),y1:Y(q2),x2:X(br1),y2:Y(q2),stroke:css('--blue'),'stroke-dasharray':'3 4'});
+ e('circle',{cx:X(br1),cy:Y(q2),r:5,fill:css('--card'),stroke:css('--blue'),'stroke-width':2.5});
+ e('line',{x1:X(q1),y1:Y(q2),x2:X(q1),y2:Y(br2),stroke:css('--coral'),'stroke-dasharray':'3 4'});
+ e('circle',{cx:X(q1),cy:Y(br2),r:5,fill:css('--card'),stroke:css('--coral'),'stroke-width':2.5});
+ e('circle',{cx:X(q1),cy:Y(q2),r:6,fill:css('--ink'),stroke:css('--card'),'stroke-width':2});
+ const P=Math.max(0,30-q1-q2),pi1=P*q1,pi2=P*q2;
+ $('cp').textContent='€'+P.toFixed(1);$('cpi1').textContent='€'+pi1.toFixed(1);$('cpi2').textContent='€'+pi2.toFixed(1);
+ $('cbr').textContent=br1.toFixed(1)+' pizzas (15 − ½ × '+q2+')';
+ const near=(a,b)=>Math.abs(q1-a)<0.3&&Math.abs(q2-b)<0.3;
+ $('cmsg').textContent=near(10,10)?'Cournot–Nash equilibrium: each pizzeria does the best it can given what the other does. Nobody wants to move. Price €10, profit €100 each.':
+  near(7.5,7.5)?'Collusion: together they produce the monopoly quantity Q = 15, price €15, profit €112.5 each. But look at the dashed lines: each would earn more by cheating.':
+  near(15,15)?'Competition: Q = 30, price falls to €0 (= MC). Zero profit for both.':
+  near(15,7.5)?'Stackelberg: Antonio moves first and commits to 15; Bruno\'s best reply is 7.5. First-mover advantage: Antonio earns €112.5, Bruno €56.25.':
+  Math.abs(q1-br1)<0.3?'Antonio is on his reaction curve. Now Bruno is tempted: his best reply to '+q1+' is '+br2.toFixed(1)+'.':
+  'Antonio is not on his reaction curve: given Bruno\'s '+q2+', his best reply is '+br1.toFixed(1)+' pizzas (profit would be €'+(Math.max(0,30-br1-q2)*br1).toFixed(1)+' instead of €'+pi1.toFixed(1)+').';}
+['c1q','c2q'].forEach(i=>$(i).oninput=d8);
+[['cset1',10,10],['cset2',7.5,7.5],['cset3',15,7.5],['cset4',15,15]].forEach(([b,a,c])=>$(b).onclick=()=>{$('c1q').value=a;$('c2q').value=c;d8()});
+(()=>{let t=null;$('cplay').onclick=()=>{if(t){clearInterval(t);t=null;return}let turn=0;t=setInterval(()=>{const q1=+$('c1q').value,q2=+$('c2q').value;
+ if(turn%2===0)$('c1q').value=(Math.max(0,15-q2/2)).toFixed(1);else $('c2q').value=(Math.max(0,15-q1/2)).toFixed(1);
+ d8();turn++;if(turn>14||(Math.abs(+$('c1q').value-10)<0.2&&Math.abs(+$('c2q').value-10)<0.2)){clearInterval(t);t=null}},550)}})();
+
+/* 9 market externality (too much / too little production) */
+function d9(){const x=+$('ex').value;$('exo').textContent=(x>0?'+€':x<0?'−€':'€')+Math.abs(x).toFixed(1);
+ const e=mk($('g9')),X=v=>60+v*5.7,Y=v=>290-v*13;
+ axes(e,{X,Y,yt:[0,4,8,12,16,20],xt:[0,20,40,60,80,100],xl:'pizzas per day (Q)',yl:'€ per pizza',fy:v=>'€'+v});
+ const D=q=>20-0.2*q,MC=q=>4+0.1*q,MSC=q=>MC(q)+x,MSB=q=>D(q)-x;
+ const Qm=(20-4)/0.3,Qe=Math.max(0,Math.min(100,(16-x)/0.3));
+ e('path',{d:pathOf(D,0,100,2,X,Y,20,290),fill:'none',stroke:css('--blue'),'stroke-width':2.5});
+ e('path',{d:pathOf(MC,0,100,2,X,Y,20,290),fill:'none',stroke:css('--red'),'stroke-width':2.5});
+ if(x>0){e('path',{d:pathOf(MSC,0,100,2,X,Y,20,290),fill:'none',stroke:css('--purple'),'stroke-width':2.5});
+  e('text',{x:X(80),y:Y(MSC(80))-8,'font-size':12,fill:css('--purple')},'MSC = MC + '+x);
+  let d='M'+X(Qe)+' '+Y(D(Qe));for(let q=Qe;q<=Qm;q+=1)d+='L'+X(q)+' '+Y(MSC(q));d+='L'+X(Qm)+' '+Y(D(Qm))+'Z';
+  e('path',{d,fill:css('--coral'),opacity:.35});}
+ else if(x<0){e('path',{d:pathOf(MSB,0,100,2,X,Y,20,290),fill:'none',stroke:css('--purple'),'stroke-width':2.5});
+  e('text',{x:X(5),y:Y(MSB(5))-8,'font-size':12,fill:css('--purple')},'MSB = D + '+(-x));
+  let d='M'+X(Qm)+' '+Y(MC(Qm));for(let q=Qm;q<=Qe;q+=1)d+='L'+X(q)+' '+Y(MSB(q));d+='L'+X(Qe)+' '+Y(MC(Qe))+'Z';
+  e('path',{d,fill:css('--coral'),opacity:.35});}
+ e('line',{x1:X(Qm),x2:X(Qm),y1:Y(D(Qm)),y2:290,stroke:css('--muted'),'stroke-dasharray':'3 4'});
+ e('text',{x:X(Qm),y:324,'text-anchor':'middle','font-size':12,'font-weight':600,fill:css('--ink')},'Qm = '+Qm.toFixed(0));
+ if(Math.abs(Qe-Qm)>0.5){e('line',{x1:X(Qe),x2:X(Qe),y1:Y(x>0?MSC(Qe):MSB(Qe)),y2:290,stroke:css('--purple'),'stroke-dasharray':'3 4'});
+  e('text',{x:X(Qe),y:324,'text-anchor':'middle','font-size':12,'font-weight':600,fill:css('--purple')},'Q* = '+Qe.toFixed(0));}
+ e('circle',{cx:X(Qm),cy:Y(D(Qm)),r:5,fill:css('--ink'),stroke:css('--card'),'stroke-width':2});
+ const dwl=0.5*Math.abs(x)*Math.abs(Qm-Qe);
+ $('exq').textContent=Qm.toFixed(0)+' pizzas';$('exe').textContent=Qe.toFixed(0)+' pizzas';$('exd').textContent='€'+dwl.toFixed(0)+' per day';
+ $('exm').textContent=x>0?'Negative externality: every pizza costs the neighbours €'+x+' in smoke. The market makes '+Qm.toFixed(0)+', efficiency says '+Qe.toFixed(0)+': too much production. The shaded triangle is the deadweight loss.':
+  x<0?'Positive externality: every pizza gives passers-by €'+(-x)+' of pleasure the market does not pay for. The market makes '+Qm.toFixed(0)+', efficiency says '+Qe.toFixed(0)+': too little production.':
+  'No externality: private cost = social cost. The market output is efficient.';}
+$('ex').oninput=d9;
+
+/* 10 efficient level of emissions: MCA = MEC, fee */
+function d10(){const t=+$('ef').value;$('efo').textContent='€'+t;
+ const e=mk($('g10')),X=v=>60+v*46,Y=v=>290-v*11;
+ axes(e,{X,Y,yt:[0,4,8,12,16,20,24],xt:[0,2,4,6,8,10,12],xl:'smoke (E, units per day)',yl:'€ per unit',fy:v=>'€'+v});
+ const MCA=v=>24-2*v,MEC=v=>v,Et=Math.max(0,Math.min(12,(24-t)/2));
+ let d='M'+X(8)+' '+Y(8);for(let v=8;Et>8?v<=Et:v>=Et;v+=Et>8?0.25:-0.25)d+='L'+X(v)+' '+Y(MCA(v));d+='L'+X(Et)+' '+Y(MEC(Et))+'L'+X(8)+' '+Y(8)+'Z';
+ if(Math.abs(Et-8)>0.1)e('path',{d,fill:css('--coral'),opacity:.3});
+ e('path',{d:pathOf(MCA,0,12,0.5,X,Y,20,290),fill:'none',stroke:css('--blue'),'stroke-width':2.5});
+ e('path',{d:pathOf(MEC,0,12,0.5,X,Y,20,290),fill:'none',stroke:css('--red'),'stroke-width':2.5});
+ e('text',{x:X(1),y:Y(MCA(1))-8,'font-size':12,fill:css('--blue')},'MCA');e('text',{x:X(11),y:Y(MEC(11))-8,'font-size':12,fill:css('--red')},'MEC');
+ e('line',{x1:60,x2:630,y1:Y(t),y2:Y(t),stroke:css('--coral'),'stroke-width':2,'stroke-dasharray':'6 5'});
+ e('text',{x:626,y:Y(t)-6,'text-anchor':'end','font-size':12,fill:css('--coral')},'fee €'+t);
+ e('circle',{cx:X(8),cy:Y(8),r:6,fill:'none',stroke:css('--teal'),'stroke-width':2.5});e('text',{x:X(8)+9,y:Y(8)-8,'font-size':12,fill:css('--teal')},'E* = 8, efficient');
+ e('circle',{cx:X(Et),cy:Y(Math.min(24,MCA(Et))),r:6,fill:css('--ink'),stroke:css('--card'),'stroke-width':2});
+ e('line',{x1:X(Et),x2:X(Et),y1:Y(Math.min(24,MCA(Et))),y2:290,stroke:css('--muted'),'stroke-dasharray':'3 4'});
+ const ab=144-24*Et+Et*Et,ext=Et*Et/2;
+ $('ee').textContent=Et.toFixed(1)+' units';$('ea').textContent='€'+ab.toFixed(0);$('ec').textContent='€'+ext.toFixed(0);$('et').textContent='€'+(ab+ext).toFixed(0)+(Math.abs(Et-8)<0.1?' (minimum)':'');
+ $('em').textContent=t===0?'No fee: cleaning costs money and smoke is free to Antonio, so he emits the maximum (12). The neighbours pay the price.':
+  Math.abs(Et-8)<0.1?'Fee €8 = Pigouvian fee: Antonio cleans until MCA = fee = MEC. The last unit of smoke costs the neighbours exactly what cleaning it would cost. Total social cost is at its minimum (€48).':
+  Et>8?'Fee too low: Antonio stops cleaning at '+Et.toFixed(1)+' units, where MCA = fee. From 8 up, each unit costs the neighbours more (MEC) than cleaning would (MCA): the shaded area is wasted.':
+  'Fee too high: Antonio cleans beyond 8, where cleaning costs more than the smoke would have hurt. Also wasteful (shaded).';}
+$('ef').oninput=d10;player($('eplay'),$('ef'),1,24,0,d10);
+
+/* 11 fee versus standard, two pizzerias */
+function d11(){const T=+$('ft').value;$('fto').textContent=T;
+ const e=mk($('g11'));
+ const fee=Math.max(0,Math.min(24,24-4*T/3)),EA=(24-fee)/2,EB=(24-fee)/4,cap=T/2;
+ const cA=v=>144-24*v+v*v,cB=v=>72-24*v+2*v*v;
+ const costFee=cA(EA)+cB(EB),costStd=cA(Math.min(12,cap))+cB(Math.min(6,cap));
+ const panel=(L,R,name,col,MCA,Emax,Efee)=>{const X=v=>L+v*(R-L)/12,Y=v=>280-v*10;
+  axes(e,{X,Y,L,R,T:20,B:280,yt:[0,8,16,24],xt:[0,4,8,12],fy:v=>'€'+v,xl:'smoke'});
+  e('text',{x:L+4,y:16,'font-size':13,'font-weight':600,fill:css(col)},name);
+  let d='M'+X(Efee)+' '+Y(0);for(let v=Efee;v<=Emax;v+=0.25)d+='L'+X(v)+' '+Y(MCA(v));d+='L'+X(Emax)+' '+Y(0)+'Z';e('path',{d,fill:css('--coral'),opacity:.25});
+  let d2='M'+X(Math.min(Emax,cap))+' '+Y(0);for(let v=Math.min(Emax,cap);v<=Emax;v+=0.25)d2+='L'+X(v)+' '+Y(MCA(v));d2+='L'+X(Emax)+' '+Y(0)+'Z';e('path',{d:d2,fill:'none',stroke:css('--purple'),'stroke-width':1.5,'stroke-dasharray':'4 3'});
+  e('path',{d:pathOf(MCA,0,Emax,0.5,X,Y,20,280),fill:'none',stroke:css(col),'stroke-width':2.5});
+  e('line',{x1:L,x2:R,y1:Y(fee),y2:Y(fee),stroke:css('--coral'),'stroke-dasharray':'6 5','stroke-width':2});
+  e('line',{x1:X(Math.min(Emax,cap)),x2:X(Math.min(Emax,cap)),y1:20,y2:280,stroke:css('--purple'),'stroke-dasharray':'3 4'});
+  e('text',{x:X(Math.min(Emax,cap))+4,y:32,'font-size':11,fill:css('--purple')},'cap '+cap.toFixed(1));
+  e('circle',{cx:X(Efee),cy:Y(fee),r:5,fill:css('--coral'),stroke:css('--card'),'stroke-width':2});
+  e('text',{x:X(Efee),y:314,'text-anchor':'middle','font-size':11,fill:css('--coral')},'fee → '+Efee.toFixed(1));};
+ panel(60,320,"Antonio (old oven)",'--blue',v=>24-2*v,12,EA);
+ panel(380,630,"Bruno (new oven)",'--teal',v=>24-4*v,6,EB);
+ $('ff').textContent='€'+fee.toFixed(1);$('fc1').textContent='€'+costFee.toFixed(0);$('fc2').textContent='€'+costStd.toFixed(0);$('fs').textContent='€'+(costStd-costFee).toFixed(0);
+ $('fm').textContent=T>=12?'No cleaning needed: both ovens smoke freely (12 + 6 = 18 units is the maximum here).':
+  'Both routes give '+T+' units of smoke in total. With the fee, Antonio emits '+EA.toFixed(1)+' and Bruno '+EB.toFixed(1)+': Bruno cleans more because it is cheap for him. The standard forces '+cap.toFixed(1)+' each, so expensive cleaning at Antonio\'s replaces cheap cleaning at Bruno\'s. That is why the fee is €'+(costStd-costFee).toFixed(0)+' cheaper for the same smoke.';}
+$('ft').oninput=d11;
+
+/* 12 public good: vertical summation */
+function d12(){const n=+$('pn').value;$('pno').textContent=n;
+ const e=mk($('g12')),X=v=>60+v*57,Y=v=>290-v*4.4;
+ axes(e,{X,Y,yt:[0,12,24,36,48,60],xt:[0,2,4,6,8,10],xl:'lamps on the square (q)',yl:'€ per lamp, per year',fy:v=>'€'+v});
+ const a=q=>Math.max(0,8-0.8*q),b=q=>Math.max(0,6-0.6*q),c=q=>Math.max(0,4-0.4*q),tot=q=>a(q)+b(q)+n*c(q),MC=12;
+ e('path',{d:pathOf(a,0,10,0.5,X,Y,20,290),fill:'none',stroke:css('--blue'),'stroke-width':2});
+ e('path',{d:pathOf(b,0,10,0.5,X,Y,20,290),fill:'none',stroke:css('--teal'),'stroke-width':2});
+ if(n>0)e('path',{d:pathOf(c,0,10,0.5,X,Y,20,290),fill:'none',stroke:css('--muted'),'stroke-width':1.5,'stroke-dasharray':'4 3'});
+ e('path',{d:pathOf(tot,0,10,0.25,X,Y,20,290),fill:'none',stroke:css('--purple'),'stroke-width':3});
+ e('line',{x1:60,x2:630,y1:Y(MC),y2:Y(MC),stroke:css('--red'),'stroke-width':2.5});e('text',{x:626,y:Y(MC)-6,'text-anchor':'end','font-size':12,fill:css('--red')},'cost per lamp €12');
+ const t0=tot(0),qe=t0>MC?10*(1-MC/t0):0;
+ if(qe>0){e('line',{x1:X(qe),x2:X(qe),y1:Y(MC),y2:290,stroke:css('--purple'),'stroke-dasharray':'3 4'});e('circle',{cx:X(qe),cy:Y(MC),r:6,fill:'none',stroke:css('--purple'),'stroke-width':2.5});
+  e('text',{x:X(qe),y:324,'text-anchor':'middle','font-size':12,'font-weight':600,fill:css('--purple')},'q* = '+qe.toFixed(1));}
+ e('text',{x:X(0.3),y:Y(t0)-8,'font-size':12,fill:css('--purple')},'Total MB = Anita + Antonio + '+n+' × neighbour');
+ $('pq').textContent=qe.toFixed(1)+' lamps';$('pa').textContent='0 (max. willingness €8 < €12)';$('pt').textContent='€'+t0.toFixed(0);
+ $('pm').textContent=t0<=MC?'Together the square values the first lamp at €'+t0.toFixed(0)+', less than it costs: no lamp is efficient yet. Add neighbours.':
+  'Nobody values a lamp at €12 alone (Anita tops out at €8), so left to the market: zero lamps and everyone free-rides. Added vertically, the square values the first lamp at €'+t0.toFixed(0)+' and '+qe.toFixed(1)+' lamps are efficient. That is the case for government provision paid from taxes.';}
+$('pn').oninput=d12;player($('pplay2'),$('pn'),1,20,0,d12);
+
+function all(){d1();d2();d3();d4();d5();d6();d7();d8();d9();d10();d11();d12()}
 all();matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',all);
 </script>
 </body>
