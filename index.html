@@ -65,7 +65,7 @@ body.present .bars{grid-template-columns:1fr!important}
 body.present .bars>div{font-size:.85em!important}
 
 /* deck */
-body.present .wrap{padding:2vw 2.5vw}
+body.present .wrap{padding:2vw 2.5vw 70px}
 body.present section.plain{display:none}
 body.present section.plain.on{display:flex;flex-direction:column;justify-content:center;padding:4vw 6vw;gap:1.6vw}
 .plain .big{font-size:3.4em;line-height:1.05;font-weight:700;margin:0;letter-spacing:-.01em}
@@ -216,6 +216,25 @@ body.uu .plain .big{color:#1f2a7c}
  const q=sp.get('g')||location.hash.slice(1);
  const id=names[q]||(q&&document.getElementById(q)?q:null);
  const all=[...document.querySelectorAll('section')];
+ const deckMode=sp.get('deck')==='1'||/^#deck/.test(location.hash);
+ if(deckMode){ document.body.classList.add('present');
+  all.forEach(sec=>{if(sec.classList.contains('plain'))return;
+   const L=document.createElement('div'),R=document.createElement('div');L.className='left';R.className='right';
+   [...sec.children].forEach(n=>(n.classList.contains('box')||n.classList.contains('leg')?L:R).appendChild(n));sec.append(L,R);});
+  const nav=document.createElement('nav');nav.className='deck';nav.setAttribute('aria-label','Slides');
+  nav.innerHTML='<span class="dots" id="dots"></span><button id="prev" aria-label="Previous slide">←</button><span class="n" id="cnt"></span><button id="next" aria-label="Next slide">→</button><button class="fs" id="fs">⛶ Full screen</button>';
+  document.body.appendChild(nav);
+  let i=Math.max(0,Math.min(all.length-1,(parseInt(location.hash.replace(/^#deck-?/,'#').slice(1))||1)-1));
+  const dots=document.getElementById('dots');all.forEach((_,k)=>{const d=document.createElement('i');d.onclick=()=>go(k);dots.appendChild(d)});
+  function go(k){i=Math.max(0,Math.min(all.length-1,k));all.forEach((s,n)=>s.classList.toggle('on',n===i));
+   [...dots.children].forEach((d,n)=>d.classList.toggle('on',n===i));
+   document.getElementById('cnt').textContent=(i+1)+' / '+all.length;try{if(typeof history.replaceState==='function')history.replaceState(null,'',(location.search?location.search:'')+(location.search?'#'+(i+1):'#deck-'+(i+1)));}catch(x){}}
+  document.getElementById('prev').onclick=()=>go(i-1);document.getElementById('next').onclick=()=>go(i+1);
+  document.getElementById('fs').onclick=()=>{const d=document.documentElement;document.fullscreenElement?document.exitFullscreen():d.requestFullscreen&&d.requestFullscreen()};
+  addEventListener('keydown',e=>{if(e.target.tagName==='INPUT'&&(e.key==='ArrowLeft'||e.key==='ArrowRight'))return;
+   if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();go(i+1)}
+   if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(i-1)}});
+  go(i);return;}
  if(!id){ /* overzicht: alle grafieken onder elkaar, met links */
   const h=document.querySelector('h1');const ul=document.createElement('p');ul.className='lede';
   ul.innerHTML='Eén grafiek per slide: '+Object.keys(names).filter(k=>!['cover','method','end'].includes(k)).map(k=>`<a href="?g=${k}">${k}</a> (<a href="?g=${k}&t=uu">uu</a>)`).join(' · ');

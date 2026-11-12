@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Micro sliders · for lecturers</title>
+<style>
+:root{--bg:#F7F7F5;--card:#fff;--ink:#1F1E1C;--soft:#5F5E5A;--muted:#8A8983;--line:#E3E2DC;--tile:#F1F0EC;--purple:#7F77DD;--teal:#1D9E75;--navy:#1f2a7c;--yellow:#ffcd00}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:820px;margin:0 auto;padding:32px 18px 64px}
+h1{font-size:30px;line-height:1.15;margin:0 0 6px;font-weight:650}
+h2{font-size:21px;margin:34px 0 10px;font-weight:650}
+p{margin:0 0 10px}
+.lede{color:var(--soft);max-width:65ch;margin-bottom:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:0 0 14px}
+.big{display:inline-block;background:var(--purple);color:#fff;text-decoration:none;font-weight:600;padding:12px 18px;border-radius:9px;margin:6px 10px 6px 0}
+.big.alt{background:var(--navy)}
+.big:hover{filter:brightness(1.08)}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.btn{font:inherit;font-size:14px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:7px;padding:5px 10px;cursor:pointer;text-decoration:none;display:inline-block;margin:2px 4px 2px 0}
+.btn:hover{background:var(--tile)}
+.btn.ok{border-color:var(--teal);color:var(--teal)}
+ol li{margin:0 0 8px}
+code{background:var(--tile);padding:1px 6px;border-radius:5px;font-size:14px}
+.note{background:#fff7d6;border-left:4px solid var(--yellow);padding:10px 14px;border-radius:6px;margin:12px 0}
+.small{font-size:14px;color:var(--soft)}
+@media (max-width:560px){th:nth-child(2),td:nth-child(2){display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Learning microeconomics by moving sliders</h1>
+<p class="lede">Seven interactive graphs for a principles course (Pindyck &amp; Rubinfeld, chapters 3, 6, 7, 8). Two recurring characters: Antonio, who runs a pizzeria, and Anita, who spends her money on beer and pizza. Each slider has the same colour as the line it moves. Nothing is stored, no accounts, no cookies.</p>
+
+<div class="card">
+  <h2 style="margin-top:0">1 · Present right now (nothing to install)</h2>
+  <p>Opens the whole set as a slideshow: arrow keys or clicker to move, sliders work with the mouse. Press <em>Full screen</em> in the bottom bar.</p>
+  <a class="big" href="index.html?deck=1">▶ Present (soft look)</a>
+  <a class="big alt" href="index.html?deck=1&amp;t=uu">▶ Present (UU look)</a>
+  <p class="small">Tip: use the UU look for the lecture hall; it matches the navy headings and the pink/cyan lines of the textbook figures.</p>
+</div>
+
+<div class="card">
+  <h2 style="margin-top:0">2 · Put a graph inside your own PowerPoint</h2>
+  <p>Each graph becomes a normal object on a slide and keeps working during the slide show. You load a small file once per graph; after that it stays in your account.</p>
+  <table>
+    <thead><tr><th>Graph</th><th>Topic</th><th>Get it</th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <p class="small" style="margin-top:10px">Want the UU look inside PowerPoint? Use the same steps; after inserting, I can switch the file to the UU colours for you.</p>
+</div>
+
+<div class="card">
+  <h2 style="margin-top:0">3 · Steps in PowerPoint</h2>
+  <p><strong>PowerPoint for the web</strong> (office.com, also on a lecture-hall PC in the browser):</p>
+  <ol>
+    <li>Download the add-in file of the graph you want (button above). It is a small <code>.xml</code> file.</li>
+    <li>In PowerPoint: <strong>Insert → Add-ins → More add-ins</strong> (or search “Add-ins” in the top search box).</li>
+    <li>Tab <strong>My add-ins → Manage my add-ins → Upload my add-in → Browse</strong>, choose the file, <strong>Upload</strong>.</li>
+    <li>The graph appears on the slide. Drag the corners to make it fill the slide, leaving a small margin.</li>
+    <li>Start the slide show. Drag the sliders; click next to the graph (or use the bottom bar) to go to the next slide.</li>
+  </ol>
+  <p><strong>PowerPoint on Windows or Mac (desktop):</strong> the same add-in works, but the “upload” button does not exist there. Either present from PowerPoint for the web, or ask me: I will set it up on your laptop in ten minutes.</p>
+  <div class="note"><strong>Clicker:</strong> after you touch a slider, click once beside the graph so PowerPoint listens to the clicker again. The graphs also forward Page Down / Page Up themselves, so usually you will not notice.</div>
+</div>
+
+<div class="card">
+  <h2 style="margin-top:0">4 · If something does not work</h2>
+  <p>Use button 1 (“Present”) in a browser; it always works. Or send me a message and I will come by. Mats van Helden · <span id="mail">[your e-mail]</span></p>
+</div>
+
+<p class="small">Source and files: <a href="https://github.com/matsvanhelden-ops/micro-sliders">github.com/matsvanhelden-ops/micro-sliders</a>. Built by Mats van Helden, premaster Economics, Utrecht University.</p>
+</div>
+
+<script>
+const graphs=[
+ ['profit',"Antonio's profit hill","Profit maximisation (ch. 8): price, rent, slices sold"],
+ ['mp',"Marginal product","Production (ch. 6): big jumps vs. single steps"],
+ ['isoquant',"Why the isoquant gets flatter","Two inputs (ch. 6): workers vs. ovens"],
+ ['balance',"MRTS balance","(MP_L)(ΔL) + (MP_K)(ΔK) = 0 (ch. 6)"],
+ ['cost',"Cost minimisation","MRTS = w / r (ch. 7)"],
+ ['basket',"Anita's best basket","Consumer choice (ch. 3): MRS = Px / Py"],
+ ['hill',"The utility hill","Consumer choice (ch. 3), same idea as a hill"],
+];
+const base=location.href.replace(/[^/]*$/,'');
+const tb=document.getElementById('rows');
+for(const [g,name,topic] of graphs){
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td><strong>${name}</strong></td><td class="small">${topic}</td><td>
+   <a class="btn" href="index.html?g=${g}" target="_blank">Preview</a>
+   <button class="btn" data-link="${base}index.html?g=${g}">Copy link</button>
+   <a class="btn ok" href="${g}.xml" download="${g}.xml">Download add-in file</a></td>`;
+  tb.appendChild(tr);
+}
+tb.addEventListener('click',async e=>{const b=e.target.closest('button[data-link]');if(!b)return;
+ try{await navigator.clipboard.writeText(b.dataset.link);b.textContent='Copied';setTimeout(()=>b.textContent='Copy link',1500)}
+ catch(x){prompt('Copy this link:',b.dataset.link)}});
+</script>
+</body>
+</html>
