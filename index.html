@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap">
 <title>Learning microeconomics by moving sliders</title>
 <style>
 :root{--bg:#F7F7F5;--card:#FFFFFF;--ink:#1F1E1C;--soft:#5F5E5A;--muted:#8A8983;--line:#E3E2DC;--tile:#F1F0EC;
@@ -87,6 +88,18 @@ nav.deck .fs{position:absolute;right:18px}
 nav.deck .dots{display:flex;gap:6px;position:absolute;left:18px}
 nav.deck .dots i{width:8px;height:8px;border-radius:50%;background:var(--line);cursor:pointer}
 nav.deck .dots i.on{background:var(--purple)}
+
+/* UU / Pindyck-stijl (?t=uu): navy koppen, roze+cyaan lijnen zoals in de collegeslides, UU-geel accent */
+body.uu{--bg:#ffffff;--card:#ffffff;--ink:#111111;--soft:#333333;--muted:#666666;--line:#d9d9d9;--tile:#f3f3f3;
+ --blue:#1f9bd0;--red:#e2457a;--purple:#1f2a7c;--teal:#2e9e6b;--coral:#e07b2a;font-family:"Open Sans",system-ui,sans-serif}
+body.uu h2{font-family:"Times New Roman",Times,serif;font-weight:700;color:#1f2a7c;border-bottom:2px solid #1f2a7c;padding-bottom:.2em}
+body.uu .week{color:#1f2a7c;text-transform:uppercase;letter-spacing:.04em;font-weight:600}
+body.uu section{border:0;box-shadow:none;border-radius:0}
+body.uu .t{background:#fff;border:1px solid #1f2a7c;border-radius:0}
+body.uu .msg{background:#fff7d6;border-left:4px solid #ffcd00;border-radius:0}
+body.uu button{border-radius:0;border-color:#1f2a7c;color:#1f2a7c}
+body.uu .plain .cast div,body.uu .steps div{background:#fff7d6;border-radius:0}
+body.uu .plain .big{color:#1f2a7c}
 </style>
 </head>
 <body>
@@ -199,12 +212,13 @@ nav.deck .dots i.on{background:var(--purple)}
 <script>
 (function(){
  const names={cover:'s-cover',method:'s-method',basket:'s-ic',hill:'s-hill',mp:'s-mp',isoquant:'s-iso',balance:'s-bal',cost:'s-cost',profit:'s-profit',end:'s-end'};
- const q=new URLSearchParams(location.search).get('g')||location.hash.slice(1);
+ const sp=new URLSearchParams(location.search); if(sp.get('t')==='uu')document.body.classList.add('uu');
+ const q=sp.get('g')||location.hash.slice(1);
  const id=names[q]||(q&&document.getElementById(q)?q:null);
  const all=[...document.querySelectorAll('section')];
  if(!id){ /* overzicht: alle grafieken onder elkaar, met links */
   const h=document.querySelector('h1');const ul=document.createElement('p');ul.className='lede';
-  ul.innerHTML='Eén grafiek per slide: '+Object.keys(names).filter(k=>!['cover','method','end'].includes(k)).map(k=>`<a href="?g=${k}">${k}</a>`).join(' · ');
+  ul.innerHTML='Eén grafiek per slide: '+Object.keys(names).filter(k=>!['cover','method','end'].includes(k)).map(k=>`<a href="?g=${k}">${k}</a> (<a href="?g=${k}&t=uu">uu</a>)`).join(' · ');
   h.after(ul);return;}
  document.body.classList.add('present');
  all.forEach(sec=>{if(sec.classList.contains('plain'))return;
