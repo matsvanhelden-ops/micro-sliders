@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Micro sliders · compare versions</title>
+<style>
+:root{--bg:#F7F7F5;--ink:#1F1E1C;--soft:#5F5E5A;--line:#E3E2DC;--purple:#7F77DD}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;height:100vh;display:flex;flex-direction:column}
+header{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--line);background:#fff}
+header b{font-weight:650}select,label{font:inherit}select{padding:4px 8px;border-radius:6px;border:1px solid var(--line)}
+.grid{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px;min-height:0}
+.pane{display:flex;flex-direction:column;min-height:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+.pane h2{font-size:13px;font-weight:600;color:var(--soft);margin:0;padding:6px 12px;border-bottom:1px solid var(--line);letter-spacing:.03em;text-transform:uppercase}
+iframe{flex:1;border:0;width:100%;min-height:0}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+</style></head><body>
+<header><b>Compare versions</b>
+<label>Graph <select id="g"></select></label>
+<label>Left <select id="l"><option value="">current (full text)</option><option value="&m=1">minimal</option><option value="&m=2">minimal + formulas</option><option value="&m=3">full text + formulas</option></select></label>
+<label>Right <select id="r"><option value="">current (full text)</option><option value="&m=1">minimal</option><option value="&m=2" selected>minimal + formulas</option><option value="&m=3">full text + formulas</option></select></label>
+<label><input type="checkbox" id="uu"> UU look</label>
+</header>
+<div class="grid"><div class="pane"><h2 id="lt"></h2><iframe id="lf"></iframe></div><div class="pane"><h2 id="rt"></h2><iframe id="rf"></iframe></div></div>
+<script>
+const graphs=['profit','mp','isoquant','balance','cost','basket','hill','cournot','extern','emission','feestd','public'];
+const gs=document.getElementById('g');graphs.forEach(x=>{const o=document.createElement('option');o.value=o.textContent=x;gs.appendChild(o)});
+const sp=new URLSearchParams(location.search);if(graphs.includes(sp.get('g')))gs.value=sp.get('g');
+function load(){const uu=document.getElementById('uu').checked?'&t=uu':'';const l=document.getElementById('l'),r=document.getElementById('r');
+ document.getElementById('lf').src='index.html?g='+gs.value+l.value+uu+'&noffice=1';document.getElementById('rf').src='index.html?g='+gs.value+r.value+uu+'&noffice=1';
+ document.getElementById('lt').textContent=l.options[l.selectedIndex].text;document.getElementById('rt').textContent=r.options[r.selectedIndex].text;}
+['g','l','r','uu'].forEach(id=>document.getElementById(id).addEventListener('change',load));load();
+</script></body></html>

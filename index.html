@@ -3,7 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+<script>/* office.js maakt de pagina leeg als hij in een eigen (same-origin) iframe staat, zoals op compare.html; in PowerPoint (cross-origin frame) wel laden */
+(function(){var skip=/[?&]noffice=1/.test(location.search);try{if(window.parent!==window&&window.parent.location.origin===location.origin)skip=true}catch(e){}
+if(!skip)document.write('<script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"><\/script>')})();</script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap">
 <title>Learning microeconomics by moving sliders</title>
 <style>
@@ -44,6 +46,11 @@ svg text{font-family:inherit}
 body.present{font-size:clamp(14px,1.45vw,24px);overflow:hidden}
 body.present.hall{font-size:clamp(16px,1.75vw,28px)} /* ?big=1: zaalvariant */
 body.present.hall .ctl input[type=range]{height:2em}
+.fx{display:none;font-variant-numeric:tabular-nums;font-size:15px;line-height:1.75;margin-top:10px;padding:10px 14px;background:var(--tile);border-radius:8px;white-space:pre-line}
+.fx b{font-weight:600}
+body.showfx .fx{display:block} body.present .fx{font-size:.95em}
+body.min .try,body.min .msg{display:none!important}
+body.min.present .right .try{display:none}
 button.reset{float:right;font-size:12px;padding:3px 9px;color:var(--muted);border-style:dashed;text-transform:none;letter-spacing:0}
 body.present button.reset{font-size:.7em}
 body.present .wrap{max-width:none;height:100vh;padding:72px 2.2vw 1.6vw}
@@ -136,6 +143,7 @@ body.uu .plain .big{color:#1f2a7c}
 <div class="leg"><span><i style="background:var(--blue)"></i>Budget line</span><span><i style="background:var(--purple)"></i>Indifference curve through her basket</span></div>
 <div class="tiles"><div class="t"><div class="k">Wants to trade (MRS)</div><div class="v" id="a1"></div></div><div class="t"><div class="k">Has to trade (Px / Py)</div><div class="v">2</div></div><div class="t"><div class="k">Utility</div><div class="v" id="a2"></div></div></div>
 <div class="msg" id="a3"></div>
+<div class="fx" id="fx-s-ic"></div>
 </section>
 <section id="s-hill">
 <p class="week">Week 2 · Consumer choice (ch. 3)</p>
@@ -148,6 +156,7 @@ body.uu .plain .big{color:#1f2a7c}
 <div style="font-size:14px">Loss: 2 slices</div><div style="background:var(--tile);border-radius:4px;height:22px"><div id="h2" style="height:22px;border-radius:4px;background:var(--coral);width:0"></div></div>
 </div>
 <div class="msg" id="h3"></div>
+<div class="fx" id="fx-s-hill"></div>
 </section>
 <section id="s-mp">
 <p class="week">Week 3 · Production (ch. 6)</p>
@@ -159,6 +168,7 @@ body.uu .plain .big{color:#1f2a7c}
 <div class="leg"><span><i style="background:var(--blue)"></i>Total pizzas q(L)</span><span><i style="background:var(--coral)"></i>Big jump</span><span><i style="background:var(--teal)"></i>Single steps (MP)</span></div>
 <div class="tiles"><div class="t"><div class="k">Big jump Δq / ΔL</div><div class="v" id="m1" style="color:var(--coral)"></div></div><div class="t"><div class="k">Single steps, one worker each</div><div class="v" id="m2" style="color:var(--teal);font-size:15px"></div></div></div>
 <div class="msg" id="m3"></div>
+<div class="fx" id="fx-s-mp"></div>
 </section>
 <section id="s-iso">
 <p class="week">Week 3 · Production with two inputs (ch. 6)</p>
@@ -167,6 +177,7 @@ body.uu .plain .big{color:#1f2a7c}
 <div class="ctl"><label for="il" style="color:var(--purple);font-weight:600">Workers (L)</label><input type="range" id="il" style="accent-color:var(--purple)" min="1.5" max="6" step="0.1" value="1.5"><output id="ilo" style="color:var(--purple)"></output><button id="iplay">▶ Swap ovens for people</button></div>
 <div class="box"><svg id="g3" viewBox="0 0 660 340"></svg></div>
 <div class="tiles"><div class="t"><div class="k">Antonio has</div><div class="v" id="i1"></div></div><div class="t"><div class="k">1 extra worker replaces</div><div class="v" id="i2" style="color:var(--coral)"></div></div><div class="t"><div class="k">Curve here</div><div class="v" id="i3" style="color:var(--purple)"></div></div></div>
+<div class="fx" id="fx-s-iso"></div>
 </section>
 <section id="s-bal">
 <p class="week">Week 3 · MRTS formula (ch. 6)</p>
@@ -177,6 +188,7 @@ body.uu .plain .big{color:#1f2a7c}
 <div class="ctl"><label for="bc" style="color:var(--purple);font-weight:600">ΔL (extra workers)</label><input type="range" id="bc" style="accent-color:var(--purple)" min="1" max="4" step="1" value="1"><output id="bco" style="color:var(--purple)"></output></div>
 <div class="box"><svg id="g4" viewBox="0 0 660 260"></svg></div>
 <div class="eq" id="b1"></div>
+<div class="fx" id="fx-s-bal"></div>
 </section>
 <section id="s-cost">
 <p class="week">Week 3 · Cost minimization (ch. 7)</p>
@@ -188,6 +200,7 @@ body.uu .plain .big{color:#1f2a7c}
 <div class="leg"><span><i style="background:var(--purple)"></i>440 isoquant</span><span><i style="background:var(--coral)"></i>Isocost through Antonio's point</span><span><i style="background:var(--teal)"></i>Cheapest isocost</span></div>
 <div class="tiles"><div class="t"><div class="k">MRTS (technology)</div><div class="v" id="c1"></div></div><div class="t"><div class="k">w / r (market)</div><div class="v" id="c2"></div></div><div class="t"><div class="k">Total cost</div><div class="v" id="c3"></div></div></div>
 <div class="msg" id="c4"></div>
+<div class="fx" id="fx-s-cost"></div>
 </section>
 <section id="s-profit">
 <p class="week">Week 4 · Profit maximization (ch. 8)</p>
@@ -199,6 +212,7 @@ body.uu .plain .big{color:#1f2a7c}
 <div class="box"><svg id="g1" viewBox="0 0 660 340"></svg></div>
 <div class="leg"><span><i style="background:var(--blue)"></i>Revenue R = P × q</span><span><i style="background:var(--red)"></i>Cost C(q)</span><span><i style="background:var(--purple)"></i>Profit π = R − C</span></div>
 <div class="tiles"><div class="t"><div class="k">Revenue R</div><div class="v" id="p1" style="color:var(--blue)"></div></div><div class="t"><div class="k">Cost C</div><div class="v" id="p2" style="color:var(--red)"></div></div><div class="t"><div class="k">Profit π</div><div class="v" id="p3" style="color:var(--purple)"></div></div><div class="t"><div class="k">One more slice</div><div class="v" id="p4" style="font-size:15px"></div></div></div>
+<div class="fx" id="fx-s-profit"></div>
 </section>
 <section id="s-cournot">
 <p class="week">Week 7 · Oligopoly (ch. 12)</p>
@@ -211,6 +225,7 @@ body.uu .plain .big{color:#1f2a7c}
 <div class="leg"><span><i style="background:var(--blue)"></i>Antonio's reaction curve q₁ = 15 − ½q₂</span><span><i style="background:var(--coral)"></i>Bruno's reaction curve q₂ = 15 − ½q₁</span><span><i style="background:var(--purple)"></i>Collusion curve q₁ + q₂ = 15</span></div>
 <div class="tiles"><div class="t"><div class="k">Price P = 30 − Q</div><div class="v" id="cp"></div></div><div class="t"><div class="k">Antonio's profit</div><div class="v" id="cpi1" style="color:var(--blue)"></div></div><div class="t"><div class="k">Bruno's profit</div><div class="v" id="cpi2" style="color:var(--coral)"></div></div><div class="t"><div class="k">Antonio's best reply to Bruno</div><div class="v" id="cbr" style="font-size:15px"></div></div></div>
 <div class="msg" id="cmsg"></div>
+<div class="fx" id="fx-s-cournot"></div>
 </section>
 <section id="s-extern">
 <p class="week">Week 8 · Externalities (ch. 18)</p>
@@ -221,6 +236,7 @@ body.uu .plain .big{color:#1f2a7c}
 <div class="leg"><span><i style="background:var(--blue)"></i>Demand (private benefit)</span><span><i style="background:var(--red)"></i>Private marginal cost</span><span><i style="background:var(--purple)"></i>Social marginal cost or benefit</span></div>
 <div class="tiles"><div class="t"><div class="k">Market output Q<sub>m</sub></div><div class="v" id="exq"></div></div><div class="t"><div class="k">Efficient output Q*</div><div class="v" id="exe" style="color:var(--purple)"></div></div><div class="t"><div class="k">Deadweight loss</div><div class="v" id="exd" style="color:var(--coral)"></div></div></div>
 <div class="msg" id="exm"></div>
+<div class="fx" id="fx-s-extern"></div>
 </section>
 <section id="s-emission">
 <p class="week">Week 8 · Remedies: the efficient level of emissions (ch. 18)</p>
@@ -231,6 +247,7 @@ body.uu .plain .big{color:#1f2a7c}
 <div class="leg"><span><i style="background:var(--blue)"></i>MCA = 24 − 2E (Antonio's cost of cleaning)</span><span><i style="background:var(--red)"></i>MEC = E (cost to the neighbours)</span><span><i style="background:var(--coral)"></i>Fee</span></div>
 <div class="tiles"><div class="t"><div class="k">Smoke Antonio chooses</div><div class="v" id="ee" style="color:var(--coral)"></div></div><div class="t"><div class="k">Cleaning cost</div><div class="v" id="ea" style="color:var(--blue)"></div></div><div class="t"><div class="k">Cost to neighbours</div><div class="v" id="ec" style="color:var(--red)"></div></div><div class="t"><div class="k">Total social cost</div><div class="v" id="et"></div></div></div>
 <div class="msg" id="em"></div>
+<div class="fx" id="fx-s-emission"></div>
 </section>
 <section id="s-feestd">
 <p class="week">Week 8 · Fee or standard? (ch. 18)</p>
@@ -241,6 +258,7 @@ body.uu .plain .big{color:#1f2a7c}
 <div class="leg"><span><i style="background:var(--blue)"></i>Antonio, MCA = 24 − 2E</span><span><i style="background:var(--teal)"></i>Bruno, MCA = 24 − 4E</span><span><i style="background:var(--coral)"></i>Fee</span><span><i style="background:var(--purple)"></i>Standard (cap)</span></div>
 <div class="tiles"><div class="t"><div class="k">Fee that delivers this total</div><div class="v" id="ff" style="color:var(--coral)"></div></div><div class="t"><div class="k">Cleaning cost with the fee</div><div class="v" id="fc1" style="color:var(--coral)"></div></div><div class="t"><div class="k">Cleaning cost with the standard</div><div class="v" id="fc2" style="color:var(--purple)"></div></div><div class="t"><div class="k">The fee saves</div><div class="v" id="fs" style="color:var(--teal)"></div></div></div>
 <div class="msg" id="fm"></div>
+<div class="fx" id="fx-s-feestd"></div>
 </section>
 <section id="s-public">
 <p class="week">Week 8 · Public goods (ch. 18)</p>
@@ -251,6 +269,7 @@ body.uu .plain .big{color:#1f2a7c}
 <div class="leg"><span><i style="background:var(--blue)"></i>Anita's MB</span><span><i style="background:var(--teal)"></i>Antonio's MB</span><span><i style="background:var(--muted)"></i>One neighbour's MB</span><span><i style="background:var(--purple)"></i>Total MB (vertical sum)</span><span><i style="background:var(--red)"></i>Cost per lamp €12</span></div>
 <div class="tiles"><div class="t"><div class="k">Efficient number of lamps</div><div class="v" id="pq" style="color:var(--purple)"></div></div><div class="t"><div class="k">Lamps anyone buys alone</div><div class="v" id="pa"></div></div><div class="t"><div class="k">Total MB of the first lamp</div><div class="v" id="pt"></div></div></div>
 <div class="msg" id="pm"></div>
+<div class="fx" id="fx-s-public"></div>
 </section>
 <section class="plain" id="s-end">
 <p class="week">Wrap-up</p>
@@ -270,10 +289,11 @@ body.uu .plain .big{color:#1f2a7c}
  const names={cover:'s-cover',method:'s-method',basket:'s-ic',hill:'s-hill',mp:'s-mp',isoquant:'s-iso',balance:'s-bal',cost:'s-cost',profit:'s-profit',cournot:'s-cournot',extern:'s-extern',emission:'s-emission',feestd:'s-feestd',public:'s-public',end:'s-end'};
  const sp=new URLSearchParams(location.search); if(sp.get('t')==='uu')document.body.classList.add('uu');
  if(sp.get('big')==='1')document.body.classList.add('hall'); /* zaalvariant: grotere letters */
+ const mm=sp.get('m');if(mm==='1'||mm==='2')document.body.classList.add('min');if(mm==='2'||mm==='3')document.body.classList.add('showfx'); /* m=1 minimaal, m=2 minimaal+formules, m=3 alleen formules erbij */
  /* resetknop per grafiek: alle sliders terug naar de startwaarde (ook met de R-toets) */
  document.querySelectorAll('section:not(.plain)').forEach(sec=>{const ctls=sec.querySelectorAll('.ctl');if(!ctls.length)return;
   const b=document.createElement('button');b.type='button';b.className='reset';b.textContent='↺ Reset';b.title='All sliders back to start (key: R)';
-  b.onclick=()=>{sec.querySelectorAll('input[type=range]').forEach(r=>{r.value=r.defaultValue;if(r.oninput)r.oninput({target:r});});};
+  b.onclick=()=>{sec.querySelectorAll('input[type=range]').forEach(r=>{r.value=r.defaultValue;r.dispatchEvent(new Event('input',{bubbles:true}));});};
   const wk=sec.querySelector('.week')||sec.querySelector('h2');wk.appendChild(b);});
  addEventListener('keydown',e=>{if((e.key==='r'||e.key==='R')&&!(e.target&&/INPUT|TEXTAREA/.test(e.target.tagName))){const s=document.querySelector('section.on .reset');if(s)s.click();}});
  const q=sp.get('g')||location.hash.slice(1);
@@ -328,7 +348,7 @@ function axes(e,o){const L=o.L||60,R=o.R||630,T=o.T||20,B=o.B||290;
 const pathOf=(f,a,b,st,X,Y,lo=8,hi=330)=>{let d='';for(let v=a;v<=b+1e-9;v+=st){const y=Math.max(lo,Math.min(hi,Y(f(v))));d+=(d?'L':'M')+X(v).toFixed(1)+' '+y.toFixed(1)}return d};
 const eur=v=>(v<0?'-€':'€')+Math.abs(Math.round(v));
 function player(btn,input,step,max,min,fn){let t=null;btn.onclick=()=>{if(t){clearInterval(t);t=null;return}
- if(+input.value>=max)input.value=min;t=setInterval(()=>{input.value=Math.min(max,+input.value+step);fn();if(+input.value>=max){clearInterval(t);t=null}},60)}}
+ if(+input.value>=max)input.value=min;t=setInterval(()=>{input.value=Math.min(max,+input.value+step);input.dispatchEvent(new Event('input',{bubbles:true}));if(+input.value>=max){clearInterval(t);t=null}},60)}}
 
 /* 1 profit */
 function d1(){const P=+$('pp').value,F=+$('pf').value,q=+$('pq').value;
@@ -402,7 +422,7 @@ function d4(){const a=+$('ba').value,b=+$('bb').value,dl=+$('bc').value,dk=a*dl/
 ['ba','bb','bc'].forEach(i=>$(i).oninput=d4);
 
 /* 5 cost minimisation */
-function d5(){const L=+$('cl').value,w=+$('cw').value,r=50,K=16/L,cost=w*L+r*K;$('clo').textContent=L.toFixed(1);$('cwo').textContent='€'+w;
+function d5(){let L=+$('cl').value;const w=+$('cw').value,r=50;const Lopt=Math.sqrt(16*r/w);if(Math.abs(L-Lopt)<0.06)L=Lopt;const K=16/L,cost=w*L+r*K;$('clo').textContent=L.toFixed(1);$('cwo').textContent='€'+w;
  const Ls=Math.sqrt(16*r/w),Ks=16/Ls,cmin=w*Ls+r*Ks;
  const e=mk($('g5')),X=v=>60+v*62,Y=v=>290-v*22;
  axes(e,{X,Y,yt:[0,2,4,6,8,10,12],xt:[0,1,2,3,4,5,6,7,8,9],xl:'workers (L)',yl:'ovens (K), r = €50'});
@@ -418,25 +438,27 @@ function d5(){const L=+$('cl').value,w=+$('cw').value,r=50,K=16/L,cost=w*L+r*K;$
 ['cl','cw'].forEach(i=>$(i).oninput=d5);
 
 /* 6 Anita indifference curve */
-function d6(){const x=+$('ax').value,y=100-2*x,U=3*x*y*y,m=0.5*y/x;$('axo').textContent=x;
+function d6(){let x=+$('ax').value;if(Math.abs(x-50/3)<0.3)x=50/3;const y=100-2*x,U=3*x*y*y,m=0.5*y/x;$('axo').textContent=(x===50/3?'16.7':x);
  const e=mk($('g6')),X=v=>60+v*10.5,Y=v=>290-v*2.45;
  axes(e,{X,Y,yt:[0,20,40,60,80,100],xt:[0,10,20,30,40,50],xl:'beers (X)',yl:'pizza slices (Y)'});
  e('path',{d:pathOf(v=>100-2*v,0,50,0.5,X,Y,20,290),fill:'none',stroke:css('--blue'),'stroke-width':2.5});
  let d='';for(let yy=4;yy<=112;yy+=0.5){const xx=U/(3*yy*yy);if(xx<=54)d+=(d?'L':'M')+X(xx).toFixed(1)+' '+Y(yy).toFixed(1)}
  e('path',{d,fill:'none',stroke:css('--purple'),'stroke-width':2.5});
- e('circle',{cx:X(16.67),cy:Y(66.67),r:6,fill:'none',stroke:css('--teal'),'stroke-width':2.5});
- e('text',{x:X(16.67)+10,y:Y(66.67)-8,'font-size':12,fill:css('--teal')},'optimum');
+ {const Uo=3*(50/3)*Math.pow(200/3,2);let d2='';for(let yy=4;yy<=112;yy+=0.5){const xx=Uo/(3*yy*yy);if(xx<=54)d2+=(d2?'L':'M')+X(xx).toFixed(1)+' '+Y(yy).toFixed(1)}
+  e('path',{d:d2,fill:'none',stroke:css('--teal'),'stroke-width':1.5,'stroke-dasharray':'4 4',opacity:x===50/3?0:0.9});}
+ e('circle',{cx:X(50/3),cy:Y(200/3),r:6,fill:'none',stroke:css('--teal'),'stroke-width':2.5});
+ e('text',{x:X(50/3)+10,y:Y(200/3)-8,'font-size':12,fill:css('--teal')},'optimum');
  e('circle',{cx:X(x),cy:Y(y),r:6,fill:css('--ink'),stroke:css('--card'),'stroke-width':2});
  $('a1').textContent=m.toFixed(2);$('a2').textContent=Math.round(U).toLocaleString('en');
  $('a3').textContent=Math.abs(m-2)<0.08?'MRS = Px / Py. The indifference curve just touches the budget line. Anita cannot get happier.':m>2?'For Anita one beer is worth '+m.toFixed(2)+' pizza slices, but it only costs 2. A bargain: she buys more beer.':'One beer is worth only '+m.toFixed(2)+' pizza slices to her, but it costs 2. She should buy less beer and more pizza.';}
 $('ax').oninput=d6;
 
 /* 7 utility hill */
-function d7(){const x=+$('hx').value,y=100-2*x,Uf=v=>3*v*Math.pow(100-2*v,2);$('hxo').textContent=x;
+function d7(){let x=+$('hx').value;if(Math.abs(x-50/3)<0.3)x=50/3;const y=100-2*x,Uf=v=>3*v*Math.pow(100-2*v,2);$('hxo').textContent=(x===50/3?'16.7':x);
  const e=mk($('g7')),X=v=>60+v*11.4,Y=v=>240-v/240000*220;
  axes(e,{X,Y,B:240,yt:[0,60000,120000,180000,240000],fy:v=>v/1000+'k',xt:[0,10,20,30,40,50],xl:'beers (X), walking along the budget line',yl:'utility'});
  e('path',{d:pathOf(Uf,0,50,0.5,X,Y,20,240),fill:'none',stroke:css('--purple'),'stroke-width':2.5});
- e('line',{x1:X(16.67),x2:X(16.67),y1:Y(Uf(16.67)),y2:240,stroke:css('--teal'),'stroke-dasharray':'3 4'});
+ e('line',{x1:X(50/3),x2:X(50/3),y1:Y(Uf(50/3)),y2:240,stroke:css('--teal'),'stroke-dasharray':'3 4'});
  e('circle',{cx:X(x),cy:Y(Uf(x)),r:6,fill:css('--ink'),stroke:css('--card'),'stroke-width':2});
  const gain=3*y*y,loss=12*x*y,mx=Math.max(gain,loss);
  $('h1').style.width=(gain/mx*100)+'%';$('h2').style.width=(loss/mx*100)+'%';
@@ -572,6 +594,35 @@ $('pn').oninput=d12;player($('pplay2'),$('pn'),1,20,0,d12);
 
 function all(){d1();d2();d3();d4();d5();d6();d7();d8();d9();d10();d11();d12()}
 all();matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',all);
+/* live formules (?m=2 of ?m=3) */
+const FX={
+ 's-profit':()=>{const P=+$('pp').value,F=+$('pf').value,q=+$('pq').value,R=P*q,C=F+0.5*q+0.005*q*q,qs=Math.round((P-0.5)/0.01);
+  return `<b>R</b> = P·q = ${P.toFixed(2)} × ${q} = €${R.toFixed(0)}\n<b>C</b> = F + 0.5q + 0.005q² = ${F} + ${(0.5*q).toFixed(0)} + ${(0.005*q*q).toFixed(0)} = €${C.toFixed(0)}\n<b>π</b> = R − C = €${(R-C).toFixed(0)}\n<b>MR = MC</b>: ${P.toFixed(2)} = 0.5 + 0.01q  →  q* = ${qs}`},
+ 's-mp':()=>{const a=+$('ma').value,s=+$('mb').value,b=Math.min(10,a+s);
+  return `<b>MP<sub>L</sub></b> = Δq / ΔL = (q(${b}) − q(${a})) / ${b-a} = (${TQ[b]} − ${TQ[a]}) / ${b-a} = ${((TQ[b]-TQ[a])/(b-a)).toFixed(1)}`},
+ 's-iso':()=>{const L=+$('il').value,K=36/L;
+  return `<b>Isoquant</b>: K = 36 / L  →  K(${L.toFixed(1)}) = ${K.toFixed(2)}\n<b>MRTS</b> = −dK/dL = 36 / L² = ${(36/L/L).toFixed(2)} ovens per worker`},
+ 's-bal':()=>{const a=+$('ba').value,b=+$('bb').value,dl=+$('bc').value;
+  return `(MP<sub>L</sub>)(ΔL) + (MP<sub>K</sub>)(ΔK) = 0\n${a} × ${dl} + ${b} × ΔK = 0  →  <b>ΔK</b> = −${a*dl} / ${b} = ${(-a*dl/b).toFixed(2)}\n<b>MRTS</b> = MP<sub>L</sub> / MP<sub>K</sub> = ${(a/b).toFixed(2)}`},
+ 's-cost':()=>{const L=+$('cl').value,w=+$('cw').value,r=50,K=16/L,Ls=Math.sqrt(16*r/w);
+  return `<b>MRTS</b> = K / L = ${K.toFixed(2)} / ${L.toFixed(1)} = ${(K/L).toFixed(2)}     <b>w / r</b> = ${w} / ${r} = ${(w/r).toFixed(2)}\n<b>C</b> = wL + rK = ${w}·${L.toFixed(1)} + ${r}·${K.toFixed(2)} = €${(w*L+r*K).toFixed(0)}\n<b>Optimum</b>: K/L = w/r with LK = 16  →  L* = √(16r/w) = ${Ls.toFixed(2)}, K* = ${(16/Ls).toFixed(2)}, C* = €${(w*Ls+r*16/Ls).toFixed(0)}`},
+ 's-ic':()=>{let x=+$('ax').value;if(Math.abs(x-50/3)<0.3)x=50/3;const y=100-2*x;
+  return `<b>Budget</b>: 2x + y = 100  →  y = 100 − 2x = ${y.toFixed(1)}\n<b>U</b> = 3xy² = ${Math.round(3*x*y*y).toLocaleString('en')}\n<b>MRS</b> = MU<sub>x</sub> / MU<sub>y</sub> = 3y² / 6xy = y / 2x = ${(y/(2*x)).toFixed(2)}\n<b>P<sub>x</sub> / P<sub>y</sub></b> = 2\nMRS = P<sub>x</sub>/P<sub>y</sub>  →  y = 4x  →  x* = 16.7, y* = 66.7`},
+ 's-hill':()=>{let x=+$('hx').value;if(Math.abs(x-50/3)<0.3)x=50/3;const y=100-2*x;
+  return `<b>U(x)</b> = 3x(100 − 2x)² = ${Math.round(3*x*y*y).toLocaleString('en')}\n<b>dU/dx</b> = 3y² − 12xy = ${Math.round(3*y*y).toLocaleString('en')} − ${Math.round(12*x*y).toLocaleString('en')} = ${Math.round(3*y*y-12*x*y).toLocaleString('en')}\ndU/dx = 0  →  y = 4x  →  x* = 16.7`},
+ 's-cournot':()=>{const q1=+$('c1q').value,q2=+$('c2q').value,P=30-q1-q2;
+  return `<b>P</b> = 30 − Q = 30 − ${q1} − ${q2} = €${P}\n<b>π<sub>1</sub></b> = P·q<sub>1</sub> = ${P} × ${q1} = €${P*q1}     <b>π<sub>2</sub></b> = ${P} × ${q2} = €${P*q2}\n<b>Best replies</b>: q<sub>1</sub> = 15 − ½q<sub>2</sub> = ${(15-q2/2).toFixed(1)}     q<sub>2</sub> = 15 − ½q<sub>1</sub> = ${(15-q1/2).toFixed(1)}\n<b>Cournot</b>: (10, 10), P = 10     <b>Collusion</b>: Q = 15, P = 15     <b>Competition</b>: Q = 30, P = 0`},
+ 's-extern':()=>{const x=+$('ex').value,Qm=(20-4)/0.3,Qe=Math.max(0,Math.min(100,(16-x)/0.3));
+  return `<b>D</b>: P = 20 − 0.2Q     <b>MC</b> = 4 + 0.1Q     external effect = ${x>=0?'+':'−'}€${Math.abs(x).toFixed(1)} per pizza\n<b>Market</b>: D = MC  →  Q<sub>m</sub> = 16 / 0.3 = ${Qm.toFixed(1)}\n<b>Efficient</b>: MSB = MSC  →  Q<sub>e</sub> = (16 − ${x.toFixed(1)}) / 0.3 = ${Qe.toFixed(1)}\n<b>DWL</b> = ½ × |${x.toFixed(1)}| × |${Qm.toFixed(1)} − ${Qe.toFixed(1)}| = €${(0.5*Math.abs(x)*Math.abs(Qm-Qe)).toFixed(1)}`},
+ 's-emission':()=>{const t=+$('ef').value,Et=Math.max(0,Math.min(12,(24-t)/2));
+  return `<b>MCA</b> = 24 − 2E     <b>MEC</b> = E\n<b>Efficient</b>: MCA = MEC  →  24 − 2E = E  →  E* = 8, fee* = €8\n<b>With fee €${t}</b>: Antonio abates while MCA > fee  →  E = (24 − ${t}) / 2 = ${Et.toFixed(1)}`},
+ 's-feestd':()=>{const T=+$('ft').value,fee=Math.max(0,Math.min(24,24-4*T/3)),EA=(24-fee)/2,EB=(24-fee)/4;
+  return `<b>MCA<sub>A</sub></b> = 24 − 2E<sub>A</sub>     <b>MCA<sub>B</sub></b> = 24 − 4E<sub>B</sub>     target E<sub>A</sub> + E<sub>B</sub> = ${T}\n<b>Fee</b>: MCA<sub>A</sub> = MCA<sub>B</sub> = f  →  E<sub>A</sub> = (24 − f)/2, E<sub>B</sub> = (24 − f)/4  →  f = 24 − 4T/3 = €${fee.toFixed(1)}, E<sub>A</sub> = ${EA.toFixed(1)}, E<sub>B</sub> = ${EB.toFixed(1)}\n<b>Standard</b>: E<sub>A</sub> = E<sub>B</sub> = ${(T/2).toFixed(1)}  →  MCA<sub>A</sub> = €${(24-T).toFixed(0)} ≠ MCA<sub>B</sub> = €${(24-2*T).toFixed(0)}`},
+ 's-public':()=>{const n=+$('pn').value,t0=8+6+4*n,sl=0.8+0.6+0.4*n,qe=t0>12?(t0-12)/sl:0;
+  return `<b>ΣMB</b> = (8 − 0.8q) + (6 − 0.6q) + ${n}·(4 − 0.4q) = ${t0} − ${sl.toFixed(1)}q\n<b>ΣMB = MC</b>: ${t0} − ${sl.toFixed(1)}q = 12  →  q* = ${qe.toFixed(2)} lamps`}
+};
+function updFx(sec){const el=sec&&sec.querySelector('.fx');if(!el||!FX[sec.id])return;el.innerHTML=FX[sec.id]();}
+document.querySelectorAll('section:not(.plain)').forEach(sec=>{sec.querySelectorAll('input[type=range]').forEach(r=>r.addEventListener('input',()=>updFx(sec)));updFx(sec);});
 </script>
 </body>
 </html>
