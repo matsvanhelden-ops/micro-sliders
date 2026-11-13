@@ -42,6 +42,10 @@ svg text{font-family:inherit}
 .eq{font-variant-numeric:tabular-nums;font-size:15px;line-height:1.9;margin-top:10px}
 /* presentation mode: ?graph=name shows one graph filling a 16:9 slide */
 body.present{font-size:clamp(14px,1.45vw,24px);overflow:hidden}
+body.present.hall{font-size:clamp(16px,1.75vw,28px)} /* ?big=1: zaalvariant */
+body.present.hall .ctl input[type=range]{height:2em}
+button.reset{float:right;font-size:12px;padding:3px 9px;color:var(--muted);border-style:dashed;text-transform:none;letter-spacing:0}
+body.present button.reset{font-size:.7em}
 body.present .wrap{max-width:none;height:100vh;padding:72px 2.2vw 1.6vw}
 body.present .wrap>h1,body.present .lede,body.present section{display:none}
 body.present section.on{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:2vw;height:100%;margin:0;padding:1.4vw 1.8vw}
@@ -265,6 +269,13 @@ body.uu .plain .big{color:#1f2a7c}
 (function(){
  const names={cover:'s-cover',method:'s-method',basket:'s-ic',hill:'s-hill',mp:'s-mp',isoquant:'s-iso',balance:'s-bal',cost:'s-cost',profit:'s-profit',cournot:'s-cournot',extern:'s-extern',emission:'s-emission',feestd:'s-feestd',public:'s-public',end:'s-end'};
  const sp=new URLSearchParams(location.search); if(sp.get('t')==='uu')document.body.classList.add('uu');
+ if(sp.get('big')==='1')document.body.classList.add('hall'); /* zaalvariant: grotere letters */
+ /* resetknop per grafiek: alle sliders terug naar de startwaarde (ook met de R-toets) */
+ document.querySelectorAll('section:not(.plain)').forEach(sec=>{const ctls=sec.querySelectorAll('.ctl');if(!ctls.length)return;
+  const b=document.createElement('button');b.type='button';b.className='reset';b.textContent='↺ Reset';b.title='All sliders back to start (key: R)';
+  b.onclick=()=>{sec.querySelectorAll('input[type=range]').forEach(r=>{r.value=r.defaultValue;if(r.oninput)r.oninput({target:r});});};
+  const wk=sec.querySelector('.week')||sec.querySelector('h2');wk.appendChild(b);});
+ addEventListener('keydown',e=>{if((e.key==='r'||e.key==='R')&&!(e.target&&/INPUT|TEXTAREA/.test(e.target.tagName))){const s=document.querySelector('section.on .reset');if(s)s.click();}});
  const q=sp.get('g')||location.hash.slice(1);
  const id=names[q]||(q&&document.getElementById(q)?q:null);
  const all=[...document.querySelectorAll('section')];
