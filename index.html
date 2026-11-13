@@ -12,7 +12,7 @@ if(!skip)document.write('<script src="https://appsforoffice.microsoft.com/lib/1/
 :root{--bg:#F7F7F5;--card:#FFFFFF;--ink:#1F1E1C;--soft:#5F5E5A;--muted:#8A8983;--line:#E3E2DC;--tile:#F1F0EC;
 --blue:#378ADD;--red:#E24B4A;--purple:#7F77DD;--teal:#1D9E75;--coral:#D85A30;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1A1A19;--card:#232321;--ink:#EEEDE8;--soft:#C3C2B7;--muted:#8A8983;--line:#383835;--tile:#2C2C2A}}
+@media (prefers-color-scheme:dark){:root[data-theme="auto"]{--bg:#1A1A19;--card:#232321;--ink:#EEEDE8;--soft:#C3C2B7;--muted:#8A8983;--line:#383835;--tile:#2C2C2A}}
 :root[data-theme="dark"]{--bg:#1A1A19;--card:#232321;--ink:#EEEDE8;--soft:#C3C2B7;--muted:#8A8983;--line:#383835;--tile:#2C2C2A}
 *,*::before,*::after{box-sizing:inherit}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
@@ -289,6 +289,7 @@ body.uu .plain .big{color:#1f2a7c}
  const names={cover:'s-cover',method:'s-method',basket:'s-ic',hill:'s-hill',mp:'s-mp',isoquant:'s-iso',balance:'s-bal',cost:'s-cost',profit:'s-profit',cournot:'s-cournot',extern:'s-extern',emission:'s-emission',feestd:'s-feestd',public:'s-public',end:'s-end'};
  const sp=new URLSearchParams(location.search); if(sp.get('t')==='uu')document.body.classList.add('uu');
  if(sp.get('big')==='1')document.body.classList.add('hall'); /* zaalvariant: grotere letters */
+ if(sp.get('dark')==='1')document.documentElement.setAttribute('data-theme','dark'); /* slides zijn wit: altijd licht, tenzij &dark=1 */
  const mm=sp.get('m');if(mm==='1'||mm==='2')document.body.classList.add('min');if(mm==='2'||mm==='3')document.body.classList.add('showfx'); /* m=1 minimaal, m=2 minimaal+formules, m=3 alleen formules erbij */
  /* resetknop per grafiek: alle sliders terug naar de startwaarde (ook met de R-toets) */
  document.querySelectorAll('section:not(.plain)').forEach(sec=>{const ctls=sec.querySelectorAll('.ctl');if(!ctls.length)return;
